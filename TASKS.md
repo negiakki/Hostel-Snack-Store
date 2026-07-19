@@ -20,7 +20,7 @@
 
 
 
-🟡 Phase 4 — Admin Dashboard
+✅ Phase 3 — Store Status Foundation Complete
 
 
 
@@ -28,7 +28,7 @@
 
 
 
-Product Management QA complete. Direct PostgreSQL Prisma client generation is configured and Product Read, Write, and Admin UI are production-ready; Product Restock remains out of scope.
+Store Status backend and Admin UI are complete. Phase 3C produced a reusable customer banner, temporarily rendered on the public foundation page; its final placement belongs in the Phase 5 customer storefront.
 
 
 
@@ -36,7 +36,7 @@ Product Management QA complete. Direct PostgreSQL Prisma client generation is co
 
 
 
-Implement the Product Restock API and UI after approval.
+Implement Phase 5 Customer Store, beginning with the storefront landing page and placement of the reusable Store Status banner. Product Restock remains pending.
 
 
 
@@ -312,7 +312,7 @@ Local PostgreSQL is not running on port 5432, so the initial migration cannot ye
 
 
 
-\* \[ ] Store Status
+\* \[x] Store Status foundation (Phase 3A API, Phase 3B Admin UI, and Phase 3C reusable customer banner)
 
 \* \[ ] Open Store
 
@@ -384,7 +384,7 @@ Local PostgreSQL is not running on port 5432, so the initial migration cannot ye
 
 
 
-\* \[ ] Status card
+\* \[x] Status card (Phase 3B: load and update global store status)
 
 \* \[ ] Open store
 
@@ -487,6 +487,8 @@ Local PostgreSQL is not running on port 5432, so the initial migration cannot ye
 
 
 \# Phase 5 — Customer Store
+
+\* \[ ] Store Status banner placement (reuse the Phase 3C component in the completed storefront)
 
 
 

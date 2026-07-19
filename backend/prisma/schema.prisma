@@ -100,3 +100,13 @@ model Settings {
 
   @@map("settings")
 }
+
+model StoreSettings {
+  /// This fixed primary key is enforced by the migration to keep the record singleton.
+  id         Int      @id @default(1)
+  is_open    Boolean  @default(false)
+  message    String   @default("")
+  updated_at DateTime @updatedAt @db.Timestamptz(6)
+
+  @@map("store_settings")
+}
