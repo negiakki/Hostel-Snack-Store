@@ -34,7 +34,7 @@
 
 
 
-\*\*Current Phase:\*\* Phase 4B — Inventory Management (Admin UI) Complete
+\*\*Current Phase:\*\* Phase 4C — Product & Inventory Integration Complete
 
 
 
@@ -92,7 +92,7 @@
 
 
 
-Inventory Management (Admin UI)
+Product & Inventory Integration
 
 
 
@@ -100,7 +100,7 @@ Inventory Management (Admin UI)
 
 
 
-Phase 4B is complete: administrators can review inventory in a responsive table, see backend-derived stock status, and make add, remove, or set adjustments from an accessible dialog.
+Phase 4C is complete: product creation requires a non-negative whole-number initial stock (defaulting to 0), while every later stock change remains exclusively in Inventory.
 
 
 
@@ -127,7 +127,7 @@ Phase 4B is complete: administrators can review inventory in a responsive table,
 | Authentication | ⬜ Not Started |
 
 | Product Management | 🟡 Read, Write, and Admin UI QA complete; subsequent stock changes use the inventory API |
-| Inventory Management | ✅ Phase 4A backend and Phase 4B admin UI complete; history and order integration remain out of scope |
+| Inventory Management | ✅ Phase 4A backend, Phase 4B admin UI, and Phase 4C product-creation integration complete; history and order integration remain out of scope |
 | Store Status | 🟡 Phase 3A backend and Phase 3B Admin UI complete; Phase 3C reusable banner awaits Phase 5 placement |
 
 | Orders | ⬜ Not Started |
@@ -238,7 +238,7 @@ Local PostgreSQL is not running on port 5432, so the initial Prisma migration ha
 
 
 
-Manual review of the completed Phase 4B inventory management experience before selecting the next implementation milestone.
+Manual review of the completed Phase 4C product and inventory integration before selecting the next implementation milestone.
 
 
 

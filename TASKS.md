@@ -20,7 +20,7 @@
 
 
 
-✅ Phase 4B — Inventory Management (Admin UI) Complete
+✅ Phase 4C — Product & Inventory Integration Complete
 
 
 
@@ -28,7 +28,7 @@
 
 
 
-Phase 4B inventory admin UI is complete. Administrators can view backend-derived stock statuses and adjust stock through dedicated add, remove, and set operations.
+Phase 4C product and inventory integration is complete. Administrators set required initial stock only when creating a product; all subsequent stock changes remain in the Inventory module.
 
 
 
@@ -36,7 +36,7 @@ Phase 4B inventory admin UI is complete. Administrators can view backend-derived
 
 
 
-Manual review of Phase 4B inventory management before selecting the next implementation phase.
+Manual review of Phase 4C product and inventory integration before selecting the next implementation phase.
 
 
 
@@ -433,6 +433,10 @@ Local PostgreSQL is not running on port 5432, so the initial migration cannot ye
 \* \[x] Add, remove, and set stock modal
 
 \* \[x] Loading, empty, and error states
+
+\* \[x] Product creation initial stock integration (Phase 4C)
+
+\* \[x] Product editing excludes stock changes (Phase 4C)
 
 
 

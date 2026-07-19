@@ -42,7 +42,7 @@ const emptyValues: ProductFormValues = {
   imageUrl: "",
   sellingPrice: "",
   costPrice: "",
-  stock: "",
+  stock: "0",
 };
 
 function getInitialValues(product: Product | null): ProductFormValues {
@@ -96,6 +96,17 @@ export function ProductFormDialog({
     setValues((currentValues) => ({ ...currentValues, [field]: value }));
   }
 
+  function updateInitialStock(value: string) {
+    if (value === "" || /^\d+$/.test(value)) {
+      updateValue("stock", value);
+      return;
+    }
+
+    setFormError(
+      "Initial stock must be a whole number that is zero or greater.",
+    );
+  }
+
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setFormError(null);
@@ -140,7 +151,9 @@ export function ProductFormDialog({
       }
 
       if (!stockInput || !Number.isSafeInteger(stock) || stock < 0) {
-        setFormError("Stock must be a whole number that is zero or greater.");
+        setFormError(
+          "Initial stock must be a whole number that is zero or greater.",
+        );
         return;
       }
 
@@ -282,12 +295,11 @@ export function ProductFormDialog({
               <Label htmlFor="product-stock">Initial stock</Label>
               <Input
                 id="product-stock"
-                type="number"
-                min="0"
-                step="1"
+                type="text"
                 inputMode="numeric"
+                pattern="[0-9]*"
                 value={values.stock}
-                onChange={(event) => updateValue("stock", event.target.value)}
+                onChange={(event) => updateInitialStock(event.target.value)}
                 disabled={isSubmitting}
               />
             </div>
