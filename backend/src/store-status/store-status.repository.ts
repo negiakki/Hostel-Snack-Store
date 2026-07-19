@@ -18,8 +18,12 @@ export type StoreSettingsRecord = Prisma.StoreSettingsGetPayload<{
 export class StoreStatusRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  findOrCreate(): Promise<StoreSettingsRecord> {
-    return this.prisma.storeSettings.upsert({
+  findOrCreate(
+    transaction?: Prisma.TransactionClient,
+  ): Promise<StoreSettingsRecord> {
+    const client = transaction ?? this.prisma;
+
+    return client.storeSettings.upsert({
       where: { id: STORE_SETTINGS_ID },
       create: { id: STORE_SETTINGS_ID },
       update: {},

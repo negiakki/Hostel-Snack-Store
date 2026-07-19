@@ -20,7 +20,7 @@
 
 
 
-✅ Phase 5A — Storefront Shell & Public Catalog Complete
+✅ Phase 5C — Order Creation Backend Complete
 
 
 
@@ -28,7 +28,7 @@
 
 
 
-Phase 5A storefront shell and public catalog are complete. Customers can browse active products only after the storefront confirms that the store is open; closed or unavailable status shows a dedicated availability screen.
+Phase 5C transactional order creation is complete. `POST /orders` validates the request, store status, product availability, and stock; creates immutable snapshots; and deducts inventory atomically.
 
 
 
@@ -36,7 +36,7 @@ Phase 5A storefront shell and public catalog are complete. Customers can browse 
 
 
 
-Phase 5C — Order Creation Backend.
+No active task. Select the next approved roadmap milestone before continuing.
 
 
 
@@ -44,7 +44,7 @@ Phase 5C — Order Creation Backend.
 
 
 
-Local PostgreSQL is not running on port 5432, so the initial migration cannot yet be applied.
+None for Phase 5C.
 
 
 
@@ -68,7 +68,7 @@ Local PostgreSQL is not running on port 5432, so the initial migration cannot ye
 
 | Phase 4 — Admin Dashboard | 🟡 In Progress  |
 
-| Phase 5 — Customer Store  | ⬜ Not Started  |
+| Phase 5 — Customer Store  | 🟡 In Progress  |
 
 | Phase 6 — Testing         | ⬜ Not Started  |
 
@@ -294,7 +294,7 @@ Local PostgreSQL is not running on port 5432, so the initial migration cannot ye
 
 
 
-\* \[ ] Create Order
+\* \[x] Create Order (Phase 5C)
 
 \* \[ ] List Orders
 

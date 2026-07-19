@@ -400,6 +400,38 @@ The backend validates:
 
 \- Inventory is available.
 
+Only `customerName`, `productId`, and `quantity` are accepted. The server loads
+current product data, calculates totals, creates immutable product and price
+snapshots, and deducts inventory atomically.
+
+\### Response (201 Created)
+
+```json
+
+{
+
+  "success": true,
+
+  "data": {
+
+    "orderId": "...",
+
+    "status": "Placed",
+
+    "total": 40,
+
+    "createdAt": "2026-07-19T18:30:00.000Z"
+
+  }
+
+}
+
+```
+
+Order creation returns `403` when the store is closed, `404` when a product
+does not exist, `409` for archived products or insufficient stock, and `400`
+for an invalid request body.
+
 
 
 \---
@@ -692,7 +724,7 @@ Updates:
 
 &#x20; "success": false,
 
-&#x20; "message": "One or more requested products are out of stock."
+&#x20; "message": "Insufficient stock for one or more requested products."
 
 }
 

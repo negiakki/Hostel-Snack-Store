@@ -5,6 +5,7 @@ import { validateEnvironment } from './config/validate-environment';
 import { PrismaModule } from './database/prisma.module';
 import { HealthModule } from './health/health.module';
 import { InventoryModule } from './inventory/inventory.module';
+import { OrdersModule } from './orders/orders.module';
 import { ProductsModule } from './products/products.module';
 import { StoreStatusModule } from './store-status/store-status.module';
 
@@ -19,6 +20,7 @@ import { StoreStatusModule } from './store-status/store-status.module';
     PrismaModule,
     HealthModule,
     InventoryModule,
+    OrdersModule,
     ProductsModule,
     StoreStatusModule,
   ],
