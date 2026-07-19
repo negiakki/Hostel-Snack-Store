@@ -131,14 +131,14 @@ describe('ProductsService', () => {
   });
 
   it('updates an existing product', async () => {
-    const data: UpdateProductDto = { stock: 30, sellingPrice: 25 };
+    const data: UpdateProductDto = { sellingPrice: 25 };
     findById.mockResolvedValue(product);
-    update.mockResolvedValue({ ...product, stock: 30 });
+    update.mockResolvedValue(product);
 
     await expect(service.update(product.id, data)).resolves.toMatchObject({
       success: true,
       data: {
-        stock: 30,
+        stock: 25,
         sellingPrice: 20,
       },
     });

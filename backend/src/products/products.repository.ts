@@ -78,7 +78,7 @@ export class ProductsRepository {
         image_url: data.imageUrl,
         selling_price: data.sellingPrice,
         cost_price: data.costPrice,
-        stock: data.stock,
+        ...(data.stock !== undefined ? { stock: data.stock } : {}),
       },
       select: productSelect,
     });
@@ -97,7 +97,6 @@ export class ProductsRepository {
           ? { selling_price: data.sellingPrice }
           : {}),
         ...(data.costPrice !== undefined ? { cost_price: data.costPrice } : {}),
-        ...(data.stock !== undefined ? { stock: data.stock } : {}),
       },
       select: productSelect,
     });

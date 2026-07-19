@@ -33,9 +33,7 @@ interface ProductFormDialogProps {
   product: Product | null;
   isSubmitting: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (
-    input: CreateProductInput | UpdateProductInput,
-  ) => Promise<void>;
+  onSubmit: (input: CreateProductInput | UpdateProductInput) => Promise<void>;
 }
 
 const emptyValues: ProductFormValues = {
@@ -58,7 +56,7 @@ function getInitialValues(product: Product | null): ProductFormValues {
     imageUrl: product.imageUrl,
     sellingPrice: String(product.sellingPrice),
     costPrice: "",
-    stock: String(product.stock),
+    stock: "",
   };
 }
 
@@ -106,9 +104,7 @@ export function ProductFormDialog({
     const category = values.category.trim();
     const imageUrl = values.imageUrl.trim();
     const sellingPriceInput = values.sellingPrice.trim();
-    const stockInput = values.stock.trim();
     const sellingPrice = Number(values.sellingPrice);
-    const stock = Number(values.stock);
 
     if (!name || !category || !imageUrl) {
       setFormError("Name, category, and image URL are required.");
@@ -129,13 +125,10 @@ export function ProductFormDialog({
       return;
     }
 
-    if (!stockInput || !Number.isSafeInteger(stock) || stock < 0) {
-      setFormError("Stock must be a whole number that is zero or greater.");
-      return;
-    }
-
     if (!isEditing) {
       const costPrice = Number(values.costPrice);
+      const stockInput = values.stock.trim();
+      const stock = Number(values.stock);
 
       if (
         !values.costPrice.trim() ||
@@ -143,6 +136,11 @@ export function ProductFormDialog({
         costPrice < 0
       ) {
         setFormError("Cost price must be zero or greater.");
+        return;
+      }
+
+      if (!stockInput || !Number.isSafeInteger(stock) || stock < 0) {
+        setFormError("Stock must be a whole number that is zero or greater.");
         return;
       }
 
@@ -162,7 +160,6 @@ export function ProductFormDialog({
       ...(category !== product.category ? { category } : {}),
       ...(imageUrl !== product.imageUrl ? { imageUrl } : {}),
       ...(sellingPrice !== product.sellingPrice ? { sellingPrice } : {}),
-      ...(stock !== product.stock ? { stock } : {}),
     };
 
     if (values.costPrice.trim()) {
@@ -280,21 +277,21 @@ export function ProductFormDialog({
             </div>
           </div>
 
-          <div className="grid gap-2">
-            <Label htmlFor="product-stock">
-              {isEditing ? "Stock" : "Initial stock"}
-            </Label>
-            <Input
-              id="product-stock"
-              type="number"
-              min="0"
-              step="1"
-              inputMode="numeric"
-              value={values.stock}
-              onChange={(event) => updateValue("stock", event.target.value)}
-              disabled={isSubmitting}
-            />
-          </div>
+          {!isEditing ? (
+            <div className="grid gap-2">
+              <Label htmlFor="product-stock">Initial stock</Label>
+              <Input
+                id="product-stock"
+                type="number"
+                min="0"
+                step="1"
+                inputMode="numeric"
+                value={values.stock}
+                onChange={(event) => updateValue("stock", event.target.value)}
+                disabled={isSubmitting}
+              />
+            </div>
+          ) : null}
 
           {formError ? (
             <p

@@ -6,7 +6,7 @@ export interface CreateProductDto {
   imageUrl: string;
   sellingPrice: number;
   costPrice: number;
-  stock: number;
+  stock?: number;
 }
 
 export interface UpdateProductDto {
@@ -15,10 +15,9 @@ export interface UpdateProductDto {
   imageUrl?: string;
   sellingPrice?: number;
   costPrice?: number;
-  stock?: number;
 }
 
-const PRODUCT_FIELDS = [
+const CREATE_PRODUCT_FIELDS = [
   'name',
   'category',
   'imageUrl',
@@ -27,24 +26,30 @@ const PRODUCT_FIELDS = [
   'stock',
 ] as const;
 
-type ProductField = (typeof PRODUCT_FIELDS)[number];
+const UPDATE_PRODUCT_FIELDS = [
+  'name',
+  'category',
+  'imageUrl',
+  'sellingPrice',
+  'costPrice',
+] as const;
+
 type RequestBody = Record<string, unknown>;
 
 abstract class ProductWritePipe<T> implements PipeTransform<unknown, T> {
   abstract transform(value: unknown): T;
 
-  protected parseBody(value: unknown): RequestBody {
+  protected parseBody(
+    value: unknown,
+    allowedFields: readonly string[],
+  ): RequestBody {
     if (typeof value !== 'object' || value === null || Array.isArray(value)) {
       throw this.invalidRequest();
     }
 
     const body = value as RequestBody;
 
-    if (
-      Object.keys(body).some(
-        (field) => !PRODUCT_FIELDS.includes(field as ProductField),
-      )
-    ) {
+    if (Object.keys(body).some((field) => !allowedFields.includes(field))) {
       throw this.invalidRequest();
     }
 
@@ -118,7 +123,7 @@ export class CreateProductPipe
   implements PipeTransform<unknown, CreateProductDto>
 {
   transform(value: unknown): CreateProductDto {
-    const body = this.parseBody(value);
+    const body = this.parseBody(value, CREATE_PRODUCT_FIELDS);
 
     return {
       name: this.parseText(body.name),
@@ -126,7 +131,9 @@ export class CreateProductPipe
       imageUrl: this.parseImageUrl(body.imageUrl),
       sellingPrice: this.parsePrice(body.sellingPrice),
       costPrice: this.parsePrice(body.costPrice),
-      stock: this.parseStock(body.stock),
+      ...(Object.hasOwn(body, 'stock')
+        ? { stock: this.parseStock(body.stock) }
+        : {}),
     };
   }
 }
@@ -136,7 +143,7 @@ export class UpdateProductPipe
   implements PipeTransform<unknown, UpdateProductDto>
 {
   transform(value: unknown): UpdateProductDto {
-    const body = this.parseBody(value);
+    const body = this.parseBody(value, UPDATE_PRODUCT_FIELDS);
 
     if (!Object.keys(body).length) {
       throw this.invalidRequest();
@@ -157,9 +164,6 @@ export class UpdateProductPipe
         : {}),
       ...(Object.hasOwn(body, 'costPrice')
         ? { costPrice: this.parsePrice(body.costPrice) }
-        : {}),
-      ...(Object.hasOwn(body, 'stock')
-        ? { stock: this.parseStock(body.stock) }
         : {}),
     };
   }

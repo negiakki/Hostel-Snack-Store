@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, Package, Store, X } from "lucide-react";
+import { Boxes, Menu, Package, Store, X } from "lucide-react";
 import { useState } from "react";
 
 import { cn } from "@/lib/utils";
@@ -17,6 +17,11 @@ const navigationItems = [
     href: "/admin/products",
     label: "Products",
     icon: Package,
+  },
+  {
+    href: "/admin/inventory",
+    label: "Inventory",
+    icon: Boxes,
   },
 ] as const;
 

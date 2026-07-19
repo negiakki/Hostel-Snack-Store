@@ -22,6 +22,18 @@ describe('CreateProductPipe', () => {
     ).toEqual(validProduct);
   });
 
+  it('allows omitted initial stock so the database default is used', () => {
+    const productWithoutStock = {
+      name: validProduct.name,
+      category: validProduct.category,
+      imageUrl: validProduct.imageUrl,
+      sellingPrice: validProduct.sellingPrice,
+      costPrice: validProduct.costPrice,
+    };
+
+    expect(pipe.transform(productWithoutStock)).toEqual(productWithoutStock);
+  });
+
   it.each([
     { ...validProduct, stock: -1 },
     { ...validProduct, costPrice: '15' },

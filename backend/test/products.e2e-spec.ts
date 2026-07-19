@@ -96,13 +96,13 @@ describe('Products endpoints (e2e)', () => {
   it('updates a product with a valid partial payload', async () => {
     await request(app.getHttpServer())
       .patch('/api/v1/products/69d2b1d0-5ef6-4cf3-9d31-03e3af2d6c80')
-      .send({ stock: 30 })
+      .send({ sellingPrice: 30 })
       .expect(200)
       .expect({ success: true, data: product });
 
     expect(update).toHaveBeenCalledWith(
       '69d2b1d0-5ef6-4cf3-9d31-03e3af2d6c80',
-      { stock: 30 },
+      { sellingPrice: 30 },
     );
   });
 

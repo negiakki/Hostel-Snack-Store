@@ -232,7 +232,7 @@ Updates product information.
 
 
 
-\## PATCH /products/:id/restock
+\## Inventory Operations
 
 
 
@@ -240,7 +240,25 @@ Updates product information.
 
 
 
-Adds inventory.
+Inventory operations are separate from Product CRUD. Product creation may include an initial `stock` value; otherwise it defaults to `0`.
+
+\### GET /inventory/products
+
+Returns active products in name order with backend-derived `isLowStock` and `isOutOfStock` values.
+
+\### POST /inventory/products/:id/add-stock
+
+Adds a positive quantity to a product's current stock.
+
+\### POST /inventory/products/:id/remove-stock
+
+Removes a positive quantity when enough stock is available. A request that would make stock negative returns `409 Conflict`.
+
+\### PUT /inventory/products/:id/stock
+
+Sets the stock to an exact non-negative integer for manual correction.
+
+Set-stock requests use `{ "stock": 25 }`; add-stock and remove-stock use the quantity body below.
 
 
 
@@ -724,7 +742,11 @@ Updates:
 
 | PUT /products/:id | ❌ | ✅ |
 
-| PATCH /products/:id/restock | ❌ | ✅ |
+| GET /inventory/products | ❌ | ✅ |
+
+| POST /inventory/products/:id/add-stock | ❌ | ✅ |
+| POST /inventory/products/:id/remove-stock | ❌ | ✅ |
+| PUT /inventory/products/:id/stock | ❌ | ✅ |
 
 | PATCH /products/:id/archive | ❌ | ✅ |
 

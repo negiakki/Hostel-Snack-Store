@@ -18,13 +18,13 @@
 
 
 
-\*\*Progress:\*\* 45%
+\*\*Progress:\*\* 55%
 
 
 
 ```
 
-█████████░░░░░░░░░░░ 45%
+███████████░░░░░░░░░ 55%
 
 ```
 
@@ -34,7 +34,7 @@
 
 
 
-\*\*Current Phase:\*\* Phase 3 — Store Status Foundation Complete
+\*\*Current Phase:\*\* Phase 4B — Inventory Management (Admin UI) Complete
 
 
 
@@ -66,7 +66,7 @@
 
 | Phase 3 – Store Status | ✅ Backend and Admin UI complete; storefront placement pending Phase 5 |
 
-| Phase 4 – Orders | ⬜ Not Started |
+| Phase 4 – Inventory Management | ✅ Backend and admin UI complete; order integration remains out of scope |
 
 | Phase 5 – Customer Store | ⬜ Not Started |
 
@@ -92,7 +92,7 @@
 
 
 
-Store Status Foundation
+Inventory Management (Admin UI)
 
 
 
@@ -100,7 +100,7 @@ Store Status Foundation
 
 
 
-The Store Status foundation is complete: the backend persists the global status, the admin can manage it, and a reusable customer banner is ready for final placement when the Phase 5 storefront is built.
+Phase 4B is complete: administrators can review inventory in a responsive table, see backend-derived stock status, and make add, remove, or set adjustments from an accessible dialog.
 
 
 
@@ -126,7 +126,8 @@ The Store Status foundation is complete: the backend persists the global status,
 
 | Authentication | ⬜ Not Started |
 
-| Product Management | 🟡 Read, Write, and Admin UI QA complete; restock pending |
+| Product Management | 🟡 Read, Write, and Admin UI QA complete; subsequent stock changes use the inventory API |
+| Inventory Management | ✅ Phase 4A backend and Phase 4B admin UI complete; history and order integration remain out of scope |
 | Store Status | 🟡 Phase 3A backend and Phase 3B Admin UI complete; Phase 3C reusable banner awaits Phase 5 placement |
 
 | Orders | ⬜ Not Started |
@@ -237,7 +238,7 @@ Local PostgreSQL is not running on port 5432, so the initial Prisma migration ha
 
 
 
-Implement the Phase 5 customer storefront and mount the reusable Store Status banner at its top-level customer layout.
+Manual review of the completed Phase 4B inventory management experience before selecting the next implementation milestone.
 
 
 

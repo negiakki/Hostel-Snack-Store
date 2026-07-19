@@ -24,7 +24,6 @@ export interface UpdateProductInput {
   imageUrl?: string;
   sellingPrice?: number;
   costPrice?: number;
-  stock?: number;
 }
 
 interface ProductsResponse {
@@ -57,10 +56,7 @@ function isApiError(value: unknown): value is ApiErrorResponse {
   );
 }
 
-async function request<T>(
-  path: string,
-  options: RequestInit = {},
-): Promise<T> {
+async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const response = await fetch(apiConfig.baseUrl + path, {
     headers: {
       "Content-Type": "application/json",
@@ -101,7 +97,9 @@ export async function getProducts(
   return response.data;
 }
 
-export async function createProduct(input: CreateProductInput): Promise<Product> {
+export async function createProduct(
+  input: CreateProductInput,
+): Promise<Product> {
   const response = await request<ProductResponse>("/products", {
     method: "POST",
     body: JSON.stringify(input),

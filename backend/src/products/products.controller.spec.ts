@@ -106,7 +106,7 @@ describe('ProductsController', () => {
 
   it('delegates update, archive, and restore operations to the service', async () => {
     const productId = '69d2b1d0-5ef6-4cf3-9d31-03e3af2d6c80';
-    const data: UpdateProductDto = { stock: 30 };
+    const data: UpdateProductDto = { sellingPrice: 25 };
     const response: ProductResponseWrapperDto = {
       success: true,
       data: {

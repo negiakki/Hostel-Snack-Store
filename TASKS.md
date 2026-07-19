@@ -20,7 +20,7 @@
 
 
 
-✅ Phase 3 — Store Status Foundation Complete
+✅ Phase 4B — Inventory Management (Admin UI) Complete
 
 
 
@@ -28,7 +28,7 @@
 
 
 
-Store Status backend and Admin UI are complete. Phase 3C produced a reusable customer banner, temporarily rendered on the public foundation page; its final placement belongs in the Phase 5 customer storefront.
+Phase 4B inventory admin UI is complete. Administrators can view backend-derived stock statuses and adjust stock through dedicated add, remove, and set operations.
 
 
 
@@ -36,7 +36,7 @@ Store Status backend and Admin UI are complete. Phase 3C produced a reusable cus
 
 
 
-Implement Phase 5 Customer Store, beginning with the storefront landing page and placement of the reusable Store Status banner. Product Restock remains pending.
+Manual review of Phase 4B inventory management before selecting the next implementation phase.
 
 
 
@@ -282,7 +282,7 @@ Local PostgreSQL is not running on port 5432, so the initial migration cannot ye
 
 \* [x] Restore Product
 
-\* \[ ] Restock Product
+\* \[x] Inventory backend (Phase 4A: add stock, remove stock, set stock)
 
 
 
@@ -423,6 +423,16 @@ Local PostgreSQL is not running on port 5432, so the initial migration cannot ye
 \* [x] Category filter
 
 \* \[ ] Low stock indicators
+
+\## Inventory Management
+
+\* \[x] Inventory sidebar navigation
+
+\* \[x] Inventory table with backend-derived stock status
+
+\* \[x] Add, remove, and set stock modal
+
+\* \[x] Loading, empty, and error states
 
 
 

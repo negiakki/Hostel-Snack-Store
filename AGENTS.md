@@ -290,6 +290,22 @@ Follow DATABASE.md exactly.
 
 
 
+\## Development Database and Validation
+
+
+
+Supabase PostgreSQL is the development database. Local PostgreSQL is not required.
+
+
+
+For schema validation, successful Prisma migrations against the configured `DATABASE_URL` are sufficient. Do not report the absence of a local PostgreSQL instance as an issue or blocker.
+
+
+
+Validation reports must distinguish real failures from resolved issues and irrelevant environment assumptions. Report database connectivity only when the configured `DATABASE_URL` prevents the requested validation or application operation.
+
+
+
 Rules:
 
 
