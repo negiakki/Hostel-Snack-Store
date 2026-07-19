@@ -20,7 +20,7 @@
 
 
 
-🟡 Phase 1 — Project Setup
+🟡 Phase 2 — Database
 
 
 
@@ -28,7 +28,7 @@
 
 
 
-Project foundation implemented; awaiting approval before database implementation.
+Database schema and initial migration implemented; awaiting PostgreSQL availability to apply the migration.
 
 
 
@@ -36,7 +36,7 @@ Project foundation implemented; awaiting approval before database implementation
 
 
 
-Implement the database schema and migrations (requires user approval).
+Apply and verify the initial Prisma migration once the local PostgreSQL database is running.
 
 
 
@@ -44,7 +44,7 @@ Implement the database schema and migrations (requires user approval).
 
 
 
-Local PostgreSQL is not running on port 5432; database implementation is also awaiting user approval.
+Local PostgreSQL is not running on port 5432, so the initial migration cannot yet be applied.
 
 
 
@@ -60,9 +60,9 @@ Local PostgreSQL is not running on port 5432; database implementation is also aw
 
 | ------------------------- | -------------- |
 
-| Phase 1 — Project Setup   | 🟡 In Progress |
+| Phase 1 — Project Setup   | ✅ Complete    |
 
-| Phase 2 — Database        | ⬜ Not Started  |
+| Phase 2 — Database        | 🟡 In Progress |
 
 | Phase 3 — Backend APIs    | ⬜ Not Started  |
 
@@ -158,9 +158,9 @@ Local PostgreSQL is not running on port 5432; database implementation is also aw
 
 \* \[x] Configure Prisma
 
-\* \[ ] Create initial schema
+\* [x] Create initial schema
 
-\* \[ ] Run first migration
+\* [ ] Run first migration (blocked: local PostgreSQL unavailable)
 
 
 
@@ -206,9 +206,9 @@ Local PostgreSQL is not running on port 5432; database implementation is also aw
 
 
 
-\* \[ ] Product model
+\* [x] Product model
 
-\* \[ ] Product migration
+\* [x] Product migration (generated; pending application)
 
 \* \[ ] Seed products
 
@@ -222,9 +222,9 @@ Local PostgreSQL is not running on port 5432; database implementation is also aw
 
 
 
-\* \[ ] Order model
+\* [x] Order model
 
-\* \[ ] Order Items model
+\* [x] Order Items model
 
 
 
@@ -236,7 +236,7 @@ Local PostgreSQL is not running on port 5432; database implementation is also aw
 
 
 
-\* \[ ] Settings model
+\* [x] Settings model
 
 
 
@@ -248,13 +248,13 @@ Local PostgreSQL is not running on port 5432; database implementation is also aw
 
 
 
-\* \[ ] Relationships
+\* [x] Relationships
 
-\* \[ ] Constraints
+\* [x] Constraints
 
 \* \[ ] Transactions
 
-\* \[ ] Seed script
+\* [x] Seed script assessed (not required; no initial values are documented)
 
 
 

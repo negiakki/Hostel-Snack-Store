@@ -6,3 +6,97 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum OrderStatus {
+  Placed
+  Preparing
+  Delivered
+}
+
+enum StoreOverride {
+  Open
+  Closed
+}
+
+enum Theme {
+  Light
+  Dark
+  System
+}
+
+model Product {
+  id            String      @id @default(uuid()) @db.Uuid
+  /// Complete customer-facing name, such as "Lays Magic Masala 52g".
+  name          String
+  /// A free-form store category; Version 1 does not define a fixed vocabulary.
+  category      String
+  image_url     String
+  selling_price Decimal     @db.Decimal(10, 2)
+  cost_price    Decimal     @db.Decimal(10, 2)
+  stock         Int
+  is_archived   Boolean     @default(false)
+  archived_at   DateTime?   @db.Timestamptz(6)
+  created_at    DateTime    @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime    @updatedAt @db.Timestamptz(6)
+  order_items   OrderItem[]
+
+  @@index([name])
+  @@index([category])
+  @@index([is_archived])
+  @@map("products")
+}
+
+model Order {
+  id            String      @id @default(uuid()) @db.Uuid
+  customer_name String
+  /// Historical order total captured at checkout; later product price changes do not affect it.
+  total_amount  Decimal     @db.Decimal(10, 2)
+  /// Historical cost of goods sold captured at checkout.
+  total_cost    Decimal     @db.Decimal(10, 2)
+  /// Historical profit captured at checkout. It may be negative when an item is sold below cost.
+  total_profit  Decimal     @db.Decimal(10, 2)
+  status        OrderStatus @default(Placed)
+  created_at    DateTime    @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime    @updatedAt @db.Timestamptz(6)
+  order_items   OrderItem[]
+
+  @@index([created_at])
+  @@index([status])
+  @@map("orders")
+}
+
+model OrderItem {
+  id            String  @id @default(uuid()) @db.Uuid
+  order_id      String  @db.Uuid
+  product_id    String  @db.Uuid
+  /// Immutable snapshot retained even if the referenced product is renamed.
+  product_name  String
+  /// Immutable selling-price snapshot used for historical revenue calculations.
+  selling_price Decimal @db.Decimal(10, 2)
+  /// Immutable cost-price snapshot used for historical profit calculations.
+  cost_price    Decimal @db.Decimal(10, 2)
+  quantity      Int
+  subtotal      Decimal @db.Decimal(10, 2)
+  order         Order   @relation(fields: [order_id], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  product       Product @relation(fields: [product_id], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@index([order_id])
+  @@index([product_id])
+  @@map("order_items")
+}
+
+model Settings {
+  /// The migration enforces this model as a singleton without adding an undocumented field.
+  id                    String         @id @default(uuid()) @db.Uuid
+  opening_time          DateTime       @db.Time(0)
+  closing_time          DateTime       @db.Time(0)
+  auto_schedule_enabled Boolean
+  manual_override       StoreOverride?
+  low_stock_threshold   Int
+  notifications_enabled Boolean
+  theme                 Theme
+  created_at            DateTime       @default(now()) @db.Timestamptz(6)
+  updated_at            DateTime       @updatedAt @db.Timestamptz(6)
+
+  @@map("settings")
+}

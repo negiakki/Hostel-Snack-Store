@@ -6,7 +6,7 @@
 
 >
 
-> Last Updated: YYYY-MM-DD
+> Last Updated: 2026-07-19
 
 
 
@@ -18,13 +18,13 @@
 
 
 
-\*\*Progress:\*\* 0%
+\*\*Progress:\*\* 15%
 
 
 
 ```
 
-██████████░░░░░░░░░░ 0%
+███░░░░░░░░░░░░░░░░░ 15%
 
 ```
 
@@ -34,7 +34,7 @@
 
 
 
-\*\*Current Phase:\*\* Phase 0 – Foundation
+\*\*Current Phase:\*\* Milestone 2 – Database Layer
 
 
 
@@ -58,7 +58,7 @@
 
 |--------|--------|
 
-| Phase 0 – Foundation | 🟡 In Progress |
+| Phase 0 – Foundation | ✅ Complete |
 
 | Phase 1 – Authentication | ⬜ Not Started |
 
@@ -92,7 +92,7 @@
 
 
 
-Repository Scaffolding
+Database schema and initial migration
 
 
 
@@ -100,7 +100,7 @@ Repository Scaffolding
 
 
 
-Set up the project foundation without implementing business logic.
+Apply the generated initial migration after local PostgreSQL becomes available; backend APIs remain out of scope pending approval.
 
 
 
@@ -118,11 +118,11 @@ Set up the project foundation without implementing business logic.
 
 | Documentation | ✅ Complete |
 
-| Frontend | ⬜ Not Started |
+| Frontend | 🟡 Foundation complete |
 
-| Backend | ⬜ Not Started |
+| Backend | 🟡 Foundation complete |
 
-| Database | ⬜ Not Started |
+| Database | 🟡 Schema and migration ready; application blocked |
 
 | Authentication | ⬜ Not Started |
 
@@ -224,7 +224,7 @@ main
 
 
 
-None
+Local PostgreSQL is not running on port 5432, so the initial Prisma migration has not been applied.
 
 
 
@@ -236,7 +236,7 @@ None
 
 
 
-✅ Complete project scaffolding.
+Apply and verify the initial database migration, then await approval before backend API implementation.
 
 
 
@@ -253,4 +253,3 @@ None
 \- Detailed implementation progress is tracked in `TASKS.md`.
 
 \- Architecture decisions are documented in the `docs/` directory.
-
