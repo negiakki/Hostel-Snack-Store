@@ -3,6 +3,7 @@ import { Prisma } from '@prisma/client';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProductQueryDto } from './dto/product-query.dto';
 import { CreateProductDto, UpdateProductDto } from './dto/product-write.dto';
+import { InventoryService } from '../inventory/inventory.service';
 import { ProductRecord, ProductsRepository } from './products.repository';
 import { ProductsService } from './products.service';
 
@@ -25,6 +26,9 @@ describe('ProductsService', () => {
   let update: jest.MockedFunction<ProductsRepository['update']>;
   let archive: jest.MockedFunction<ProductsRepository['archive']>;
   let restore: jest.MockedFunction<ProductsRepository['restore']>;
+  let getProductStatuses: jest.MockedFunction<
+    InventoryService['getProductStatuses']
+  >;
 
   beforeEach(async () => {
     findAll = jest.fn();
@@ -34,6 +38,17 @@ describe('ProductsService', () => {
     update = jest.fn();
     archive = jest.fn();
     restore = jest.fn();
+    getProductStatuses = jest.fn().mockResolvedValue(
+      new Map([
+        [
+          product.id,
+          {
+            isLowStock: false,
+            isOutOfStock: false,
+          },
+        ],
+      ]),
+    );
     repository = {
       findAll,
       findActiveById,
@@ -50,6 +65,10 @@ describe('ProductsService', () => {
         {
           provide: ProductsRepository,
           useValue: repository,
+        },
+        {
+          provide: InventoryService,
+          useValue: { getProductStatuses },
         },
       ],
     }).compile();
@@ -75,10 +94,13 @@ describe('ProductsService', () => {
           imageUrl: 'https://storage.example.com/lays-classic.jpg',
           sellingPrice: 20,
           stock: 25,
+          isLowStock: false,
+          isOutOfStock: false,
         },
       ],
     });
     expect(findAll).toHaveBeenCalledWith(query);
+    expect(getProductStatuses).toHaveBeenCalledWith([product]);
   });
 
   it('returns an active product by id', async () => {
@@ -93,9 +115,37 @@ describe('ProductsService', () => {
         imageUrl: 'https://storage.example.com/lays-classic.jpg',
         sellingPrice: 20,
         stock: 25,
+        isLowStock: false,
+        isOutOfStock: false,
       },
     });
     expect(findActiveById).toHaveBeenCalledWith(product.id);
+    expect(getProductStatuses).toHaveBeenCalledWith([product]);
+  });
+
+  it('preserves the inventory-derived low and out-of-stock statuses', async () => {
+    findAll.mockResolvedValue([product]);
+    getProductStatuses.mockResolvedValue(
+      new Map([
+        [
+          product.id,
+          {
+            isLowStock: true,
+            isOutOfStock: true,
+          },
+        ],
+      ]),
+    );
+
+    await expect(service.findAll({ archived: false })).resolves.toMatchObject({
+      data: [
+        {
+          id: product.id,
+          isLowStock: true,
+          isOutOfStock: true,
+        },
+      ],
+    });
   });
 
   it('returns 404 when no active product matches the id', async () => {
@@ -125,6 +175,8 @@ describe('ProductsService', () => {
       data: {
         id: product.id,
         sellingPrice: 20,
+        isLowStock: false,
+        isOutOfStock: false,
       },
     });
     expect(create).toHaveBeenCalledWith(data);
@@ -140,6 +192,8 @@ describe('ProductsService', () => {
       data: {
         stock: 25,
         sellingPrice: 20,
+        isLowStock: false,
+        isOutOfStock: false,
       },
     });
     expect(update).toHaveBeenCalledWith(product.id, data);

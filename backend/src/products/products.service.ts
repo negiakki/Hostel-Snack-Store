@@ -6,18 +6,28 @@ import {
   ProductResponseWrapperDto,
   ProductsResponseDto,
 } from './dto/product-response.dto';
+import {
+  InventoryService,
+  ProductStockStatus,
+} from '../inventory/inventory.service';
 import { ProductRecord, ProductsRepository } from './products.repository';
 
 @Injectable()
 export class ProductsService {
-  constructor(private readonly productsRepository: ProductsRepository) {}
+  constructor(
+    private readonly productsRepository: ProductsRepository,
+    private readonly inventoryService: InventoryService,
+  ) {}
 
   async findAll(query: ProductQueryDto): Promise<ProductsResponseDto> {
     const products = await this.productsRepository.findAll(query);
+    const statuses = await this.inventoryService.getProductStatuses(products);
 
     return {
       success: true,
-      data: products.map((product) => this.toResponse(product)),
+      data: products.map((product) =>
+        this.toResponse(product, this.getStatus(product.id, statuses)),
+      ),
     };
   }
 
@@ -33,7 +43,7 @@ export class ProductsService {
 
     return {
       success: true,
-      data: this.toResponse(product),
+      data: await this.toResponseWithStatus(product),
     };
   }
 
@@ -42,7 +52,7 @@ export class ProductsService {
 
     return {
       success: true,
-      data: this.toResponse(product),
+      data: await this.toResponseWithStatus(product),
     };
   }
 
@@ -55,7 +65,7 @@ export class ProductsService {
 
     return {
       success: true,
-      data: this.toResponse(product),
+      data: await this.toResponseWithStatus(product),
     };
   }
 
@@ -65,7 +75,7 @@ export class ProductsService {
 
     return {
       success: true,
-      data: this.toResponse(product),
+      data: await this.toResponseWithStatus(product),
     };
   }
 
@@ -75,7 +85,7 @@ export class ProductsService {
 
     return {
       success: true,
-      data: this.toResponse(product),
+      data: await this.toResponseWithStatus(product),
     };
   }
 
@@ -90,7 +100,31 @@ export class ProductsService {
     }
   }
 
-  private toResponse(product: ProductRecord): ProductResponseDto {
+  private async toResponseWithStatus(
+    product: ProductRecord,
+  ): Promise<ProductResponseDto> {
+    const statuses = await this.inventoryService.getProductStatuses([product]);
+
+    return this.toResponse(product, this.getStatus(product.id, statuses));
+  }
+
+  private getStatus(
+    productId: string,
+    statuses: Map<string, ProductStockStatus>,
+  ): ProductStockStatus {
+    const status = statuses.get(productId);
+
+    if (!status) {
+      throw new Error('Inventory status is unavailable for this product.');
+    }
+
+    return status;
+  }
+
+  private toResponse(
+    product: ProductRecord,
+    status: ProductStockStatus,
+  ): ProductResponseDto {
     return {
       id: product.id,
       name: product.name,
@@ -98,6 +132,7 @@ export class ProductsService {
       imageUrl: product.image_url,
       sellingPrice: Number(product.selling_price),
       stock: product.stock,
+      ...status,
     };
   }
 }

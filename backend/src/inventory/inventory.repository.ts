@@ -40,6 +40,12 @@ export interface InventoryListResult {
 export class InventoryRepository {
   constructor(private readonly prisma: PrismaService) {}
 
+  getLowStockThreshold(): Promise<number> {
+    return this.prisma.$transaction((transaction) =>
+      this.findLowStockThreshold(transaction),
+    );
+  }
+
   async findAll(): Promise<InventoryListResult> {
     return this.prisma.$transaction(async (transaction) => {
       const products = await transaction.product.findMany({
@@ -47,16 +53,9 @@ export class InventoryRepository {
         orderBy: { name: 'asc' },
         select: inventoryListProductSelect,
       });
-      const settings = await transaction.storeSettings.upsert({
-        where: { id: STORE_SETTINGS_ID },
-        create: { id: STORE_SETTINGS_ID },
-        update: {},
-        select: { low_stock_threshold: true },
-      });
-
       return {
         products,
-        lowStockThreshold: settings.low_stock_threshold,
+        lowStockThreshold: await this.findLowStockThreshold(transaction),
       };
     });
   }
@@ -102,13 +101,6 @@ export class InventoryRepository {
         },
         data,
       });
-      const settings = await transaction.storeSettings.upsert({
-        where: { id: STORE_SETTINGS_ID },
-        create: { id: STORE_SETTINGS_ID },
-        update: {},
-        select: { low_stock_threshold: true },
-      });
-
       const product = await transaction.product.findUnique({
         where: { id },
         select: inventoryProductSelect,
@@ -116,9 +108,22 @@ export class InventoryRepository {
 
       return {
         product,
-        lowStockThreshold: settings.low_stock_threshold,
+        lowStockThreshold: await this.findLowStockThreshold(transaction),
         updated: updateResult.count === 1,
       };
     });
+  }
+
+  private async findLowStockThreshold(
+    transaction: Prisma.TransactionClient,
+  ): Promise<number> {
+    const settings = await transaction.storeSettings.upsert({
+      where: { id: STORE_SETTINGS_ID },
+      create: { id: STORE_SETTINGS_ID },
+      update: {},
+      select: { low_stock_threshold: true },
+    });
+
+    return settings.low_stock_threshold;
   }
 }

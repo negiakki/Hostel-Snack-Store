@@ -70,6 +70,8 @@ describe('ProductsController', () => {
         imageUrl: 'https://storage.example.com/lays-classic.jpg',
         sellingPrice: 20,
         stock: 25,
+        isLowStock: false,
+        isOutOfStock: false,
       },
     };
     findOne.mockResolvedValue(response);
@@ -96,6 +98,8 @@ describe('ProductsController', () => {
         imageUrl: data.imageUrl,
         sellingPrice: data.sellingPrice,
         stock: data.stock,
+        isLowStock: false,
+        isOutOfStock: false,
       },
     };
     create.mockResolvedValue(response);
@@ -116,6 +120,8 @@ describe('ProductsController', () => {
         imageUrl: 'https://storage.example.com/lays-classic.jpg',
         sellingPrice: 20,
         stock: 30,
+        isLowStock: false,
+        isOutOfStock: false,
       },
     };
     update.mockResolvedValue(response);

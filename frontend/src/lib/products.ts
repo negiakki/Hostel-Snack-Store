@@ -8,6 +8,7 @@ export interface Product {
   sellingPrice: number;
   stock: number;
   isLowStock: boolean;
+  isOutOfStock: boolean;
 }
 
 export interface CreateProductInput {

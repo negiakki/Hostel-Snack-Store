@@ -15,6 +15,16 @@ import {
   InventoryUpdateResult,
 } from './inventory.repository';
 
+interface StockedProduct {
+  id: string;
+  stock: number;
+}
+
+export interface ProductStockStatus {
+  isLowStock: boolean;
+  isOutOfStock: boolean;
+}
+
 @Injectable()
 export class InventoryService {
   constructor(private readonly inventoryRepository: InventoryRepository) {}
@@ -28,6 +38,20 @@ export class InventoryService {
         this.toProductResponse(product, result.lowStockThreshold),
       ),
     };
+  }
+
+  async getProductStatuses(
+    products: readonly StockedProduct[],
+  ): Promise<Map<string, ProductStockStatus>> {
+    const lowStockThreshold =
+      await this.inventoryRepository.getLowStockThreshold();
+
+    return new Map(
+      products.map((product) => [
+        product.id,
+        this.toStockStatus(product.stock, lowStockThreshold),
+      ]),
+    );
   }
 
   async addStock(
@@ -91,8 +115,7 @@ export class InventoryService {
         productId: product.id,
         stock: product.stock,
         lowStockThreshold,
-        isLowStock: product.stock <= lowStockThreshold,
-        isOutOfStock: product.stock === 0,
+        ...this.toStockStatus(product.stock, lowStockThreshold),
       },
     };
   }
@@ -109,8 +132,17 @@ export class InventoryService {
       productId: product.id,
       stock: product.stock,
       lowStockThreshold,
-      isLowStock: product.stock <= lowStockThreshold,
-      isOutOfStock: product.stock === 0,
+      ...this.toStockStatus(product.stock, lowStockThreshold),
+    };
+  }
+
+  private toStockStatus(
+    stock: number,
+    lowStockThreshold: number,
+  ): ProductStockStatus {
+    return {
+      isLowStock: stock <= lowStockThreshold,
+      isOutOfStock: stock === 0,
     };
   }
 

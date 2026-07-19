@@ -20,7 +20,7 @@ function formatPrice(value: number): string {
 
 export function CustomerProductCard({ product }: CustomerProductCardProps) {
   const { addItem } = useCart();
-  const isOutOfStock = product.stock === 0;
+  const isOutOfStock = product.isOutOfStock;
 
   return (
     <article className="overflow-hidden rounded-xl border border-white/15 bg-canvas-night-elevated">

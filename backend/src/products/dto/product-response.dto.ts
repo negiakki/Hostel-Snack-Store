@@ -5,6 +5,8 @@ export interface ProductResponseDto {
   imageUrl: string;
   sellingPrice: number;
   stock: number;
+  isLowStock: boolean;
+  isOutOfStock: boolean;
 }
 
 export interface ProductsResponseDto {

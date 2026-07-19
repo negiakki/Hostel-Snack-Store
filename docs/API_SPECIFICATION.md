@@ -138,6 +138,9 @@ Endpoints are classified as:
 
 Returns all active, non-archived products.
 
+Each product includes backend-derived `isLowStock` and `isOutOfStock` status
+flags. The response does not expose the low-stock threshold.
+
 
 
 \### Query Parameters
