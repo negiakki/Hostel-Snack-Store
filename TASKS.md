@@ -20,7 +20,7 @@
 
 
 
-🟡 Phase 2 — Database
+🟡 Phase 4 — Admin Dashboard
 
 
 
@@ -28,7 +28,7 @@
 
 
 
-Database schema and initial migration implemented; awaiting PostgreSQL availability to apply the migration.
+Product Management QA complete. Direct PostgreSQL Prisma client generation is configured and Product Read, Write, and Admin UI are production-ready; Product Restock remains out of scope.
 
 
 
@@ -36,7 +36,7 @@ Database schema and initial migration implemented; awaiting PostgreSQL availabil
 
 
 
-Apply and verify the initial Prisma migration once the local PostgreSQL database is running.
+Implement the Product Restock API and UI after approval.
 
 
 
@@ -64,9 +64,9 @@ Local PostgreSQL is not running on port 5432, so the initial migration cannot ye
 
 | Phase 2 — Database        | 🟡 In Progress |
 
-| Phase 3 — Backend APIs    | ⬜ Not Started  |
+| Phase 3 — Backend APIs    | 🟡 In Progress  |
 
-| Phase 4 — Admin Dashboard | ⬜ Not Started  |
+| Phase 4 — Admin Dashboard | 🟡 In Progress  |
 
 | Phase 5 — Customer Store  | ⬜ Not Started  |
 
@@ -270,15 +270,17 @@ Local PostgreSQL is not running on port 5432, so the initial migration cannot ye
 
 
 
-\* \[ ] GET Products
+\* [x] GET Products
 
-\* \[ ] GET Product
+\* [x] GET Product
 
-\* \[ ] Create Product
+\* [x] Create Product
 
-\* \[ ] Update Product
+\* [x] Update Product
 
-\* \[ ] Archive Product
+\* [x] Archive Product
+
+\* [x] Restore Product
 
 \* \[ ] Restock Product
 
@@ -402,21 +404,23 @@ Local PostgreSQL is not running on port 5432, so the initial migration cannot ye
 
 \* \[ ] Products page
 
-\* \[ ] Product grid
+\* [x] Product table
 
 \* \[ ] Product card
 
-\* \[ ] Add product
+\* [x] Add product
 
-\* \[ ] Edit product
+\* [x] Edit product
 
-\* \[ ] Archive product
+\* [x] Archive product
+
+\* [x] Restore product
 
 \* \[ ] Restock product
 
-\* \[ ] Search
+\* [x] Search
 
-\* \[ ] Category filter
+\* [x] Category filter
 
 \* \[ ] Low stock indicators
 

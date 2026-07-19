@@ -9,6 +9,20 @@ export function validateEnvironment(config: Record<string, unknown>) {
     );
   }
 
+  let databaseProtocol: string;
+
+  try {
+    databaseProtocol = new URL(databaseUrl).protocol;
+  } catch {
+    throw new Error('DATABASE_URL must be a valid PostgreSQL connection URL.');
+  }
+
+  if (!['postgres:', 'postgresql:'].includes(databaseProtocol)) {
+    throw new Error(
+      'DATABASE_URL must use a direct PostgreSQL connection URL (postgresql:// or postgres://). Prisma Accelerate URLs are not supported.',
+    );
+  }
+
   const configuredPort = config.PORT ?? DEFAULT_PORT;
   const port = Number(configuredPort);
 
