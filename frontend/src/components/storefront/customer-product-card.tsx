@@ -1,3 +1,9 @@
+"use client";
+
+import { ShoppingBag } from "lucide-react";
+
+import { useCart } from "@/components/storefront/cart-provider";
+import { Button } from "@/components/ui/button";
 import type { Product } from "@/lib/products";
 
 interface CustomerProductCardProps {
@@ -13,6 +19,7 @@ function formatPrice(value: number): string {
 }
 
 export function CustomerProductCard({ product }: CustomerProductCardProps) {
+  const { addItem } = useCart();
   const isOutOfStock = product.stock === 0;
 
   return (
@@ -31,20 +38,27 @@ export function CustomerProductCard({ product }: CustomerProductCardProps) {
         <h2 className="mt-2 text-lg font-medium leading-6 text-white">
           {product.name}
         </h2>
-        <div className="mt-5 flex items-end justify-between gap-4">
-          <p className="font-mono text-base tabular-nums text-white">
-            {formatPrice(product.sellingPrice)}
-          </p>
-          <p
-            className={
-              isOutOfStock
-                ? "text-sm font-medium text-white"
-                : "text-sm text-zinc-300"
-            }
-          >
-            {isOutOfStock ? "Out of stock" : "Available tonight"}
-          </p>
+        <div className="mt-5 flex items-center justify-between gap-4">
+          <p className="font-mono text-base tabular-nums text-white">{formatPrice(product.sellingPrice)}</p>
+          {isOutOfStock ? (
+            <p className="text-sm font-medium text-white">Out of stock</p>
+          ) : product.isLowStock ? (
+            <span className="rounded-full border border-white/45 px-3 py-1 text-xs font-medium text-white">
+              Low stock
+            </span>
+          ) : (
+            <p className="text-sm text-zinc-300">Available tonight</p>
+          )}
         </div>
+        <Button
+          type="button"
+          className="mt-5 w-full bg-aloe-10 text-black hover:bg-pistachio-10"
+          onClick={() => addItem(product)}
+          disabled={isOutOfStock}
+        >
+          <ShoppingBag aria-hidden="true" />
+          {isOutOfStock ? "Out of stock" : "Add to cart"}
+        </Button>
       </div>
     </article>
   );

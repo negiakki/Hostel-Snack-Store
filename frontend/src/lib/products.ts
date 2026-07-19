@@ -7,6 +7,7 @@ export interface Product {
   imageUrl: string;
   sellingPrice: number;
   stock: number;
+  isLowStock: boolean;
 }
 
 export interface CreateProductInput {

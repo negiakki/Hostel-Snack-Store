@@ -20,7 +20,7 @@
 
 
 
-✅ Phase 5C — Order Creation Backend Complete
+✅ Phase 5B — Cart Complete
 
 
 
@@ -28,7 +28,7 @@
 
 
 
-Phase 5C transactional order creation is complete. `POST /orders` validates the request, store status, product availability, and stock; creates immutable snapshots; and deducts inventory atomically.
+Phase 5B customer cart is complete. Customers can add available catalog products, manage client-side quantities, review totals, and open a gated `/cart` page. Checkout and order submission remain intentionally unimplemented.
 
 
 
@@ -44,7 +44,7 @@ No active task. Select the next approved roadmap milestone before continuing.
 
 
 
-None for Phase 5C.
+None for Phase 5B.
 
 
 
@@ -514,7 +514,7 @@ None for Phase 5C.
 
 \* \[x] Product details intentionally excluded from Phase 5
 
-\* \[ ] Cart
+\* \[x] Cart (Phase 5B)
 
 \* \[ ] Checkout
 

@@ -1,3 +1,4 @@
+import { CartProvider } from "@/components/storefront/cart-provider";
 import { StorefrontAvailabilityGate } from "@/components/storefront/storefront-availability-gate";
 
 export default function StorefrontLayout({
@@ -5,5 +6,9 @@ export default function StorefrontLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <StorefrontAvailabilityGate>{children}</StorefrontAvailabilityGate>;
+  return (
+    <CartProvider>
+      <StorefrontAvailabilityGate>{children}</StorefrontAvailabilityGate>
+    </CartProvider>
+  );
 }

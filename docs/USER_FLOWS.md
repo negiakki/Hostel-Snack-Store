@@ -122,6 +122,11 @@ Checkout
 
 \* Quantity cannot exceed available stock.
 
+During Phase 5B, the cart is client-side presentation state only. It is not
+persisted and does not place orders. Displayed stock only limits cart controls
+as a usability aid; the backend revalidates stock when a future checkout
+submits an order.
+
 
 
 \---
