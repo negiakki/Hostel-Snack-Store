@@ -34,7 +34,7 @@
 
 
 
-\*\*Current Phase:\*\* Phase 4C — Product & Inventory Integration Complete
+\*\*Current Phase:\*\* Phase 5A — Storefront Shell & Public Catalog Complete
 
 
 
@@ -68,7 +68,7 @@
 
 | Phase 4 – Inventory Management | ✅ Backend and admin UI complete; order integration remains out of scope |
 
-| Phase 5 – Customer Store | ⬜ Not Started |
+| Phase 5 – Customer Store | 🟡 Phase 5A storefront shell and public catalog complete; order creation backend is next |
 
 | Phase 6 – Analytics | ⬜ Not Started |
 
@@ -92,7 +92,7 @@
 
 
 
-Product & Inventory Integration
+Storefront Shell & Public Catalog
 
 
 
@@ -100,7 +100,7 @@ Product & Inventory Integration
 
 
 
-Phase 4C is complete: product creation requires a non-negative whole-number initial stock (defaulting to 0), while every later stock change remains exclusively in Inventory.
+Phase 5A is complete: the customer storefront loads store status before the catalog, fails closed when status is unavailable, and lists active products with category browsing only while the store is open.
 
 
 
@@ -128,7 +128,7 @@ Phase 4C is complete: product creation requires a non-negative whole-number init
 
 | Product Management | 🟡 Read, Write, and Admin UI QA complete; subsequent stock changes use the inventory API |
 | Inventory Management | ✅ Phase 4A backend, Phase 4B admin UI, and Phase 4C product-creation integration complete; history and order integration remain out of scope |
-| Store Status | 🟡 Phase 3A backend and Phase 3B Admin UI complete; Phase 3C reusable banner awaits Phase 5 placement |
+| Store Status | ✅ Phase 3A backend, Phase 3B Admin UI, and the Phase 5A customer availability gate are complete |
 
 | Orders | ⬜ Not Started |
 
@@ -238,7 +238,7 @@ Local PostgreSQL is not running on port 5432, so the initial Prisma migration ha
 
 
 
-Manual review of the completed Phase 4C product and inventory integration before selecting the next implementation milestone.
+Manual review of Phase 5A storefront shell and public catalog before beginning Phase 5C order creation backend.
 
 
 

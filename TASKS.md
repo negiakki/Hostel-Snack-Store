@@ -20,7 +20,7 @@
 
 
 
-✅ Phase 4C — Product & Inventory Integration Complete
+✅ Phase 5A — Storefront Shell & Public Catalog Complete
 
 
 
@@ -28,7 +28,7 @@
 
 
 
-Phase 4C product and inventory integration is complete. Administrators set required initial stock only when creating a product; all subsequent stock changes remain in the Inventory module.
+Phase 5A storefront shell and public catalog are complete. Customers can browse active products only after the storefront confirms that the store is open; closed or unavailable status shows a dedicated availability screen.
 
 
 
@@ -36,7 +36,7 @@ Phase 4C product and inventory integration is complete. Administrators set requi
 
 
 
-Manual review of Phase 4C product and inventory integration before selecting the next implementation phase.
+Phase 5C — Order Creation Backend.
 
 
 
@@ -502,17 +502,17 @@ Local PostgreSQL is not running on port 5432, so the initial migration cannot ye
 
 \# Phase 5 — Customer Store
 
-\* \[ ] Store Status banner placement (reuse the Phase 3C component in the completed storefront)
+\* \[x] Storefront availability gate and dedicated Store Closed screen (Phase 5A)
 
 
 
-\* \[ ] Landing page
+\* \[x] Landing page (Phase 5A)
 
-\* \[ ] Product listing
+\* \[x] Product listing (Phase 5A)
 
-\* \[ ] Categories
+\* \[x] Categories (Phase 5A)
 
-\* \[ ] Product details
+\* \[x] Product details intentionally excluded from Phase 5
 
 \* \[ ] Cart
 
