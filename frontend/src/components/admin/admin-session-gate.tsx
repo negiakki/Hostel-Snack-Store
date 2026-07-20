@@ -18,7 +18,9 @@ interface AdminSessionContextValue {
   logout: () => Promise<void>;
 }
 
-const AdminSessionContext = createContext<AdminSessionContextValue | null>(null);
+const AdminSessionContext = createContext<AdminSessionContextValue | null>(
+  null,
+);
 
 export function useAdminSession(): AdminSessionContextValue {
   const value = useContext(AdminSessionContext);
@@ -76,10 +78,13 @@ export function AdminSessionGate({ children }: { children: React.ReactNode }) {
   }, [redirectToLogin]);
 
   const logout = useCallback(async () => {
-    await logoutAdmin();
-    setAdmin(null);
-    window.history.replaceState(null, "", "/admin/login");
-    router.replace("/admin/login");
+    try {
+      await logoutAdmin();
+    } finally {
+      setAdmin(null);
+      window.history.replaceState(null, "", "/admin/login");
+      router.replace("/admin/login");
+    }
   }, [router]);
 
   const value = useMemo(

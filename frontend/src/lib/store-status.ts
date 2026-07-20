@@ -20,6 +20,17 @@ function isStoreStatus(value: unknown): value is StoreStatus {
   );
 }
 
+function isStoreStatusResponse(
+  value: unknown,
+): value is { success: true; data: StoreStatus } {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    (value as Record<string, unknown>).success === true &&
+    isStoreStatus((value as Record<string, unknown>).data)
+  );
+}
+
 function getErrorMessage(payload: unknown): string {
   if (typeof payload !== "object" || payload === null) {
     return "Unable to complete the request.";
@@ -53,11 +64,11 @@ async function request(
     throw new Error(getErrorMessage(payload));
   }
 
-  if (!isStoreStatus(payload)) {
+  if (!isStoreStatusResponse(payload)) {
     throw new Error("The store status response was invalid.");
   }
 
-  return payload;
+  return payload.data;
 }
 
 export function getStoreStatus(signal?: AbortSignal): Promise<StoreStatus> {
@@ -67,8 +78,12 @@ export function getStoreStatus(signal?: AbortSignal): Promise<StoreStatus> {
 export function updateStoreStatus(
   input: UpdateStoreStatusInput,
 ): Promise<StoreStatus> {
-  return request("/store-status", {
-    method: "PUT",
-    body: JSON.stringify(input),
-  }, true);
+  return request(
+    "/store-status",
+    {
+      method: "PUT",
+      body: JSON.stringify(input),
+    },
+    true,
+  );
 }

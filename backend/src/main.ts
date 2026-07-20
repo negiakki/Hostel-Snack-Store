@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { API_PREFIX } from './common/constants/api.constants';
+import { ApiExceptionFilter } from './common/filters/api-exception.filter';
 import { Configuration } from './config/configuration';
 
 async function bootstrap() {
@@ -13,6 +14,8 @@ async function bootstrap() {
   const { frontendUrls, port } = appConfig;
 
   app.setGlobalPrefix(API_PREFIX);
+  app.useGlobalFilters(new ApiExceptionFilter());
+  app.enableShutdownHooks();
   app.enableCors({
     origin: frontendUrls,
     credentials: true,

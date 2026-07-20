@@ -33,8 +33,11 @@ export class StoreStatusService {
 
   private toResponse(settings: StoreSettingsRecord): StoreStatusResponseDto {
     return {
-      isOpen: settings.is_open,
-      message: settings.message,
+      success: true,
+      data: {
+        isOpen: settings.is_open,
+        message: settings.message,
+      },
     };
   }
 }

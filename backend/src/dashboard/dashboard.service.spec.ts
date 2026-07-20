@@ -71,7 +71,10 @@ describe('DashboardService', () => {
         ['healthy-stock', { isLowStock: false, isOutOfStock: false }],
       ]),
     );
-    getStatus = jest.fn().mockResolvedValue({ isOpen: true, message: '' });
+    getStatus = jest.fn().mockResolvedValue({
+      success: true,
+      data: { isOpen: true, message: '' },
+    });
 
     service = new DashboardService(
       {

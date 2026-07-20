@@ -22,7 +22,7 @@ function LoadingOrders() {
 }
 
 export function OrdersPage() {
-  const { orders, isLoading, error, refresh } = useOrders();
+  const { orders, isLoading, isRefreshing, error, refresh } = useOrders();
 
   return (
     <main className="min-h-[100dvh] bg-canvas-night px-4 py-6 text-white sm:px-6 lg:px-10 lg:py-10">
@@ -78,8 +78,9 @@ export function OrdersPage() {
                       variant="outline"
                       className="mt-4 border-rose-100/60 bg-transparent text-rose-50 hover:bg-rose-100/15 hover:text-rose-50"
                       onClick={() => void refresh()}
+                      disabled={isRefreshing}
                     >
-                      Try again
+                      {isRefreshing ? "Retrying" : "Try again"}
                     </Button>
                   </div>
                 </div>

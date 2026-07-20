@@ -18,23 +18,23 @@
 
 
 
-\*\*Progress:\*\* 65%
+\*\*Progress:\*\* 90%
 
 
 
 ```
 
-█████████████░░░░░░░ 65%
+██████████████████░░ 90%
 
 ```
 
 
 
-\*\*Current Version:\*\* v0.0.0
+\*\*Current Version:\*\* V1 release candidate
 
 
 
-\*\*Current Phase:\*\* Phase 7B — Admin Dashboard Complete
+\*\*Current Phase:\*\* Phase 8 — Hardening & Release Review Complete
 
 
 
@@ -42,7 +42,7 @@
 
 
 
-\*\*Status:\*\* 🟡 In Progress
+\*\*Status:\*\* 🟡 Ready for deployment preparation
 
 
 
@@ -62,21 +62,21 @@
 
 | Phase 1 – Authentication | ✅ Phase 6A complete: database-backed single-admin JWT cookie authentication |
 
-| Phase 2 – Products | 🟡 In Progress |
+| Phase 2 – Products | ✅ Complete |
 
-| Phase 3 – Store Status | ✅ Backend and Admin UI complete; storefront placement pending Phase 5 |
+| Phase 3 – Store Status | ✅ Complete |
 
-| Phase 4 – Inventory Management | ✅ Backend and admin UI complete; order integration remains out of scope |
+| Phase 4 – Inventory Management | ✅ Complete |
 
-| Phase 5 – Customer Store | ✅ Phases 5A through 5D complete; checkout and order confirmation are available |
+| Phase 5 – Customer Store | ✅ Complete |
 
-| Phase 6 – Analytics | ✅ Phase 7A retention infrastructure and Phase 7B operational dashboard complete |
+| Phase 6 – Analytics | ✅ Complete |
 
-| Phase 7 – Settings | ⬜ Not Started |
+| Phase 7 – Settings | ✅ V1 scope complete |
 
-| Phase 8 – Polish | ⬜ Not Started |
+| Phase 8 – Polish | ✅ Complete |
 
-| Phase 9 – Testing \& Deployment | ⬜ Not Started |
+| Phase 9 – Testing \& Deployment | 🟡 Automated validation complete; deployment pending |
 
 
 
@@ -92,7 +92,7 @@
 
 
 
-Admin Dashboard
+Production deployment preparation
 
 
 
@@ -100,7 +100,7 @@ Admin Dashboard
 
 
 
-Phase 7B is complete: the authenticated shopkeeper has a responsive operational dashboard for today's IST activity, active orders, inventory alerts, recent active orders, and direct management shortcuts. It uses one aggregate API response and includes no charts, reporting, or cron jobs.
+V1 feature work and Phase 8 hardening are complete. The release candidate has consistent safe API errors, an application-wide recovery UI, protected-route/session handling, duplicate-request safeguards, and passing automated validation.
 
 
 
@@ -118,11 +118,11 @@ Phase 7B is complete: the authenticated shopkeeper has a responsive operational 
 
 | Documentation | ✅ Complete |
 
-| Frontend | 🟡 Foundation complete |
+| Frontend | ✅ V1 complete; lint and production build pass |
 
-| Backend | 🟡 Foundation complete |
+| Backend | ✅ V1 complete; lint, production build, unit tests, and E2E tests pass |
 
-| Database | 🟡 Schema and migration ready; application blocked |
+| Database | 🟡 Production provisioning and live smoke verification pending |
 
 | Authentication | ✅ Phase 6A complete; initial administrator is seeded from `ADMIN_*` variables and runtime login reads PostgreSQL |
 
@@ -134,7 +134,7 @@ Phase 7B is complete: the authenticated shopkeeper has a responsive operational 
 
 | Analytics | ✅ Phase 7A daily aggregates and retention cleanup complete; Phase 7B operational dashboard consumes current-day operational data without adding persistence |
 
-| Deployment | ⬜ Not Started |
+| Deployment | 🟡 Ready for production rollout |
 
 
 
@@ -226,7 +226,7 @@ main
 
 
 
-Administrator seeding and browser login QA require `ADMIN_NAME`, `ADMIN_EMAIL`, and `ADMIN_PASSWORD` to be configured in the backend environment. The Prisma migration is applied to Supabase PostgreSQL.
+No active application blocker. Production `ADMIN_*` credentials, hosting, storage, backups, and monitoring are still to be provisioned.
 
 
 
@@ -238,7 +238,7 @@ Administrator seeding and browser login QA require `ADMIN_NAME`, `ADMIN_EMAIL`, 
 
 
 
-Select the next approved roadmap milestone.
+Deploy the V1 release candidate following `docs/DEPLOYMENT.md`, then complete production smoke tests for customer ordering, admin authentication, inventory updates, and the order lifecycle.
 
 
 
@@ -261,3 +261,7 @@ Select the next approved roadmap milestone.
 \- Daily analytics lifecycle and the order retention policy are documented in `docs/DAILY_ANALYTICS.md`. Finalization requires every order for the explicit Asia/Kolkata (IST) business date to be completed, creates the unique aggregate and deletes order detail in one transaction, and is idempotent. Scheduler integration is intentionally external to the application in this phase.
 
 \- The Phase 7B dashboard architecture is documented in `docs/ARCHITECTURE.md`. Its single admin endpoint aggregates current IST orders, completed-order snapshots, inventory status, and store status without new dashboard storage.
+
+\- Phase 8 validation: frontend lint and production build pass; backend lint and production build pass; 106 unit tests and 20 E2E tests pass. Browser smoke testing verified the responsive unavailable state at 375px with no horizontal overflow. A fresh backend process now serves the live store-status workflow correctly.
+
+\- Known V2 limitations: customer authentication, payments, delivery, session analytics, charts, notifications, and additional dashboard enhancements remain intentionally out of scope.

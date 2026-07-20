@@ -39,7 +39,7 @@ export class DashboardService {
           ordersToday: todayOrders.length,
           revenueToday: Number(completedMetrics.revenue),
           profitToday: Number(completedMetrics.profit),
-          storeStatus: storeStatus.isOpen ? 'Open' : 'Closed',
+          storeStatus: storeStatus.data.isOpen ? 'Open' : 'Closed',
         },
         activeOrders: {
           placed: todayOrders.filter(

@@ -2,7 +2,7 @@
 
 import { LoaderCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,6 +18,7 @@ export default function AdminLoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isCheckingSession, setIsCheckingSession] = useState(true);
+  const submissionInFlight = useRef(false);
 
   useEffect(() => {
     let isCurrent = true;
@@ -49,6 +50,11 @@ export default function AdminLoginPage() {
       return;
     }
 
+    if (submissionInFlight.current) {
+      return;
+    }
+
+    submissionInFlight.current = true;
     setError(null);
     setIsLoading(true);
 
@@ -62,6 +68,7 @@ export default function AdminLoginPage() {
           : "Unable to sign in.",
       );
     } finally {
+      submissionInFlight.current = false;
       setIsLoading(false);
     }
   }
@@ -81,14 +88,20 @@ export default function AdminLoginPage() {
         className="w-full max-w-md rounded-xl border border-hairline-light bg-white p-6 sm:p-8"
       >
         <p className="text-sm text-zinc-600">Hostel Snack Store</p>
-        <h1 id="admin-login-title" className="mt-2 text-3xl font-semibold tracking-tight">
+        <h1
+          id="admin-login-title"
+          className="mt-2 text-3xl font-semibold tracking-tight"
+        >
           Admin sign in
         </h1>
         <p className="mt-3 text-sm leading-6 text-zinc-600">
           Sign in to manage tonight&apos;s store.
         </p>
 
-        <form className="mt-7 grid gap-5" onSubmit={(event) => void handleSubmit(event)}>
+        <form
+          className="mt-7 grid gap-5"
+          onSubmit={(event) => void handleSubmit(event)}
+        >
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
             <Input
@@ -123,7 +136,9 @@ export default function AdminLoginPage() {
           ) : null}
 
           <Button type="submit" disabled={isLoading}>
-            {isLoading ? <LoaderCircle className="animate-spin" aria-hidden="true" /> : null}
+            {isLoading ? (
+              <LoaderCircle className="animate-spin" aria-hidden="true" />
+            ) : null}
             {isLoading ? "Signing in" : "Sign in"}
           </Button>
         </form>
