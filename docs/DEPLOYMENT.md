@@ -67,7 +67,7 @@ repository, then confirm these settings:
 | --- | --- |
 | Service root directory | `backend` |
 | Runtime | Node.js 20.9 or later |
-| Build command | `npm ci && npm run build` |
+| Build command | `npm ci --include=dev && npm run build` |
 | Pre-deploy command | `npm run prisma:migrate:deploy` |
 | Start command | `npm run start:prod` |
 | Health check | `/api/v1/health` |
@@ -82,6 +82,12 @@ Render captures the Nest production log levels `log`, `warn`, and `error` from
 standard output. Unexpected server errors include the request method and path,
 but responses do not expose error details. Review Render logs and health-check
 history after every release.
+
+The Render environment sets `NODE_ENV=production`. npm therefore omits
+development dependencies by default, but Nest CLI is a build-time development
+dependency. The build command explicitly uses `--include=dev` so the local
+`@nestjs/cli` binary is available while compiling. The runtime still starts the
+compiled `dist/main` file and does not rely on Nest CLI.
 
 ### Prisma migration and seed strategy
 
