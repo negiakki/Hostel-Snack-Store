@@ -21,11 +21,13 @@ interface CartContextValue {
   items: CartItem[];
   itemCount: number;
   total: number;
+  isCheckoutLocked: boolean;
   addItem: (product: Product) => void;
   incrementItem: (productId: string) => void;
   decrementItem: (productId: string) => void;
   removeItem: (productId: string) => void;
   clearCart: () => void;
+  setCheckoutLocked: (isLocked: boolean) => void;
 }
 
 type CartAction =
@@ -92,6 +94,7 @@ function cartReducer(items: CartItem[], action: CartAction): CartItem[] {
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, dispatch] = useReducer(cartReducer, []);
   const [toast, setToast] = useState<CartToast | null>(null);
+  const [isCheckoutLocked, setCheckoutLocked] = useState(false);
   const toastTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const itemCount = useMemo(
     () => items.reduce((count, item) => count + item.quantity, 0),
@@ -110,6 +113,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     [],
   );
   const addItem = useCallback((product: Product) => {
+    if (isCheckoutLocked) {
+      return;
+    }
+
     const existingItem = items.find((item) => item.id === product.id);
 
     if (
@@ -131,16 +138,28 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         : `${product.name} added to cart.`,
     });
     toastTimeout.current = setTimeout(() => setToast(null), 3000);
-  }, [items]);
+  }, [isCheckoutLocked, items]);
   const incrementItem = useCallback((productId: string) => {
+    if (isCheckoutLocked) {
+      return;
+    }
+
     dispatch({ type: "increment", productId });
-  }, []);
+  }, [isCheckoutLocked]);
   const decrementItem = useCallback((productId: string) => {
+    if (isCheckoutLocked) {
+      return;
+    }
+
     dispatch({ type: "decrement", productId });
-  }, []);
+  }, [isCheckoutLocked]);
   const removeItem = useCallback((productId: string) => {
+    if (isCheckoutLocked) {
+      return;
+    }
+
     dispatch({ type: "remove", productId });
-  }, []);
+  }, [isCheckoutLocked]);
   const clearCart = useCallback(() => {
     dispatch({ type: "clear" });
   }, []);
@@ -149,17 +168,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       items,
       itemCount,
       total,
+      isCheckoutLocked,
       addItem,
       incrementItem,
       decrementItem,
       removeItem,
       clearCart,
+      setCheckoutLocked,
     }),
     [
       addItem,
       clearCart,
       decrementItem,
       incrementItem,
+      isCheckoutLocked,
       itemCount,
       items,
       removeItem,

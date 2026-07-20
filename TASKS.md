@@ -20,7 +20,7 @@
 
 
 
-✅ Phase 5B — Cart Complete
+✅ Phase 5D — Checkout & Order Confirmation Complete
 
 
 
@@ -28,7 +28,7 @@
 
 
 
-Phase 5B customer cart is complete. Customers can add available catalog products, manage client-side quantities, review totals, and open a gated `/cart` page. Checkout and order submission remain intentionally unimplemented.
+Phase 5D completes the customer purchase journey. Customers can submit a cart from `/checkout` with a name only, receive backend validation errors without losing their cart, and view the server-provided order confirmation at `/order-confirmation`.
 
 
 
@@ -44,7 +44,7 @@ No active task. Select the next approved roadmap milestone before continuing.
 
 
 
-None for Phase 5B.
+None for Phase 5D.
 
 
 
@@ -516,9 +516,9 @@ None for Phase 5B.
 
 \* \[x] Cart (Phase 5B)
 
-\* \[ ] Checkout
+\* \[x] Checkout (Phase 5D)
 
-\* \[ ] Order confirmation
+\* \[x] Order confirmation (Phase 5D)
 
 
 

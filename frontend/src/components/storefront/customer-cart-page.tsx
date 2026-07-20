@@ -22,6 +22,7 @@ export function CustomerCartPage() {
     decrementItem,
     removeItem,
     clearCart,
+    isCheckoutLocked,
   } = useCart();
 
   if (items.length === 0) {
@@ -62,6 +63,7 @@ export function CustomerCartPage() {
           variant="ghost"
           className="text-zinc-300 hover:bg-white/10 hover:text-white"
           onClick={clearCart}
+          disabled={isCheckoutLocked}
         >
           Clear cart
         </Button>
@@ -95,6 +97,7 @@ export function CustomerCartPage() {
                         size="icon-xs"
                         className="border-white/25 bg-transparent text-white hover:bg-white hover:text-black"
                         onClick={() => decrementItem(item.id)}
+                        disabled={isCheckoutLocked}
                       >
                         <Minus aria-hidden="true" />
                         <span className="sr-only">Decrease quantity of {item.name}</span>
@@ -108,7 +111,7 @@ export function CustomerCartPage() {
                         size="icon-xs"
                         className="border-white/25 bg-transparent text-white hover:bg-white hover:text-black"
                         onClick={() => incrementItem(item.id)}
-                        disabled={!canIncreaseQuantity}
+                        disabled={!canIncreaseQuantity || isCheckoutLocked}
                       >
                         <Plus aria-hidden="true" />
                         <span className="sr-only">Increase quantity of {item.name}</span>
@@ -125,6 +128,7 @@ export function CustomerCartPage() {
                       size="sm"
                       className="text-zinc-300 hover:bg-white/10 hover:text-white"
                       onClick={() => removeItem(item.id)}
+                      disabled={isCheckoutLocked}
                     >
                       <Trash2 aria-hidden="true" />
                       Remove
@@ -143,16 +147,13 @@ export function CustomerCartPage() {
             <p className="font-mono text-xl tabular-nums text-white">{formatPrice(total)}</p>
           </div>
           <Button
-            type="button"
+            render={<Link href="/checkout" />}
+            nativeButton={false}
             className="mt-6 w-full bg-aloe-10 text-black hover:bg-pistachio-10"
-            disabled
-            aria-describedby="checkout-phase-note"
+            disabled={isCheckoutLocked}
           >
             Proceed to Checkout
           </Button>
-          <p id="checkout-phase-note" className="mt-3 text-center text-xs leading-5 text-zinc-400">
-            Checkout will be available in Phase 5D.
-          </p>
         </aside>
       </div>
     </main>

@@ -19,7 +19,7 @@ function formatPrice(value: number): string {
 }
 
 export function CustomerProductCard({ product }: CustomerProductCardProps) {
-  const { addItem } = useCart();
+  const { addItem, isCheckoutLocked } = useCart();
   const isOutOfStock = product.isOutOfStock;
 
   return (
@@ -54,7 +54,7 @@ export function CustomerProductCard({ product }: CustomerProductCardProps) {
           type="button"
           className="mt-5 w-full bg-aloe-10 text-black hover:bg-pistachio-10"
           onClick={() => addItem(product)}
-          disabled={isOutOfStock}
+          disabled={isOutOfStock || isCheckoutLocked}
         >
           <ShoppingBag aria-hidden="true" />
           {isOutOfStock ? "Out of stock" : "Add to cart"}

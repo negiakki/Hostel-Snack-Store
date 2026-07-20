@@ -6,7 +6,7 @@
 
 >
 
-> Last Updated: 2026-07-19
+> Last Updated: 2026-07-20
 
 
 
@@ -18,13 +18,13 @@
 
 
 
-\*\*Progress:\*\* 55%
+\*\*Progress:\*\* 60%
 
 
 
 ```
 
-███████████░░░░░░░░░ 55%
+████████████░░░░░░░░ 60%
 
 ```
 
@@ -34,7 +34,7 @@
 
 
 
-\*\*Current Phase:\*\* Phase 5A — Storefront Shell & Public Catalog Complete
+\*\*Current Phase:\*\* Phase 5D — Checkout & Order Confirmation Complete
 
 
 
@@ -68,7 +68,7 @@
 
 | Phase 4 – Inventory Management | ✅ Backend and admin UI complete; order integration remains out of scope |
 
-| Phase 5 – Customer Store | 🟡 Phase 5A storefront shell and public catalog complete; order creation backend is next |
+| Phase 5 – Customer Store | ✅ Phases 5A through 5D complete; checkout and order confirmation are available |
 
 | Phase 6 – Analytics | ⬜ Not Started |
 
@@ -92,7 +92,7 @@
 
 
 
-Storefront Shell & Public Catalog
+Checkout & Order Confirmation
 
 
 
@@ -100,7 +100,7 @@ Storefront Shell & Public Catalog
 
 
 
-Phase 5A is complete: the customer storefront loads store status before the catalog, fails closed when status is unavailable, and lists active products with category browsing only while the store is open.
+Phase 5D is complete: customers can submit name-only orders from a gated checkout, see server validation errors without losing the cart, and view a refresh-safe order confirmation after successful submission.
 
 
 
@@ -130,7 +130,7 @@ Phase 5A is complete: the customer storefront loads store status before the cata
 | Inventory Management | ✅ Phase 4A backend, Phase 4B admin UI, and Phase 4C product-creation integration complete; history and order integration remain out of scope |
 | Store Status | ✅ Phase 3A backend, Phase 3B Admin UI, and the Phase 5A customer availability gate are complete |
 
-| Orders | ⬜ Not Started |
+| Orders | 🟡 Customer order creation and confirmation complete; customer history and admin management remain out of scope |
 
 | Analytics | ⬜ Not Started |
 
@@ -238,7 +238,7 @@ Local PostgreSQL is not running on port 5432, so the initial Prisma migration ha
 
 
 
-Manual review of Phase 5A storefront shell and public catalog before beginning Phase 5C order creation backend.
+Manual review of the Phase 5D checkout and order-confirmation flow before selecting the next approved milestone.
 
 
 
