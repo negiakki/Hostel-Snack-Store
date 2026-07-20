@@ -85,6 +85,23 @@ model OrderItem {
   @@map("order_items")
 }
 
+model DailyAnalytics {
+  id                  String   @id @default(uuid()) @db.Uuid
+  /// Calendar day finalized by the retention workflow, stored without a time component.
+  business_date       DateTime @unique @db.Date
+  total_orders        Int
+  revenue             Decimal  @db.Decimal(10, 2)
+  cost                Decimal  @db.Decimal(10, 2)
+  profit              Decimal  @db.Decimal(10, 2)
+  average_order_value Decimal  @db.Decimal(10, 2)
+  /// Null when no completed orders were placed during the business day.
+  best_selling_product String?
+  total_items_sold    Int
+  created_at          DateTime @default(now()) @db.Timestamptz(6)
+
+  @@map("daily_analytics")
+}
+
 model Settings {
   /// The migration enforces this model as a singleton without adding an undocumented field.
   id                    String         @id @default(uuid()) @db.Uuid

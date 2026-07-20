@@ -34,7 +34,7 @@
 
 
 
-\*\*Current Phase:\*\* Phase 6B — Orders Management Complete
+\*\*Current Phase:\*\* Phase 7B — Admin Dashboard Complete
 
 
 
@@ -70,7 +70,7 @@
 
 | Phase 5 – Customer Store | ✅ Phases 5A through 5D complete; checkout and order confirmation are available |
 
-| Phase 6 – Analytics | ⬜ Not Started |
+| Phase 6 – Analytics | ✅ Phase 7A retention infrastructure and Phase 7B operational dashboard complete |
 
 | Phase 7 – Settings | ⬜ Not Started |
 
@@ -92,7 +92,7 @@
 
 
 
-Orders Management
+Admin Dashboard
 
 
 
@@ -100,7 +100,7 @@ Orders Management
 
 
 
-Phase 6B is complete: the shopkeeper can review newest-first orders, verify immutable snapshots, and move each order through Placed → Ready → Completed. The customer confirmation screen includes screenshot-based pickup guidance for verification at collection.
+Phase 7B is complete: the authenticated shopkeeper has a responsive operational dashboard for today's IST activity, active orders, inventory alerts, recent active orders, and direct management shortcuts. It uses one aggregate API response and includes no charts, reporting, or cron jobs.
 
 
 
@@ -132,7 +132,7 @@ Phase 6B is complete: the shopkeeper can review newest-first orders, verify immu
 
 | Orders | ✅ Phase 6B complete: protected list, detail, and status APIs; polling admin workflow; immutable item snapshots; and screenshot-based pickup verification |
 
-| Analytics | ⬜ Not Started |
+| Analytics | ✅ Phase 7A daily aggregates and retention cleanup complete; Phase 7B operational dashboard consumes current-day operational data without adding persistence |
 
 | Deployment | ⬜ Not Started |
 
@@ -238,7 +238,7 @@ Administrator seeding and browser login QA require `ADMIN_NAME`, `ADMIN_EMAIL`, 
 
 
 
-Manual review of the Phase 6A admin authentication flow before selecting the next approved milestone.
+Select the next approved roadmap milestone.
 
 
 
@@ -257,3 +257,7 @@ Manual review of the Phase 6A admin authentication flow before selecting the nex
 \- Architecture decisions are documented in the `docs/` directory.
 
 \- Authentication architecture: `AdminUser` is the sole credential record; the idempotent seed reads `ADMIN_NAME`, `ADMIN_EMAIL`, and `ADMIN_PASSWORD` only when no administrator exists. Login verifies bcrypt hashes, signs an eight-hour JWT with `JWT_SECRET`, and sends it as an HttpOnly cookie. Every protected API verifies the cookie and rechecks the administrator record; the frontend verifies `/auth/session` on each admin-shell load and never stores the token.
+
+\- Daily analytics lifecycle and the order retention policy are documented in `docs/DAILY_ANALYTICS.md`. Finalization requires every order for the explicit Asia/Kolkata (IST) business date to be completed, creates the unique aggregate and deletes order detail in one transaction, and is idempotent. Scheduler integration is intentionally external to the application in this phase.
+
+\- The Phase 7B dashboard architecture is documented in `docs/ARCHITECTURE.md`. Its single admin endpoint aggregates current IST orders, completed-order snapshots, inventory status, and store status without new dashboard storage.

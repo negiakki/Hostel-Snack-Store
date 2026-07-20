@@ -20,7 +20,7 @@
 
 
 
-✅ Phase 6B — Orders Management Complete
+✅ Phase 7B — Admin Dashboard Complete
 
 
 
@@ -28,7 +28,7 @@
 
 
 
-Phase 6B completes the shopkeeper order workflow: automatic order polling, immutable order details, and the guarded Placed → Ready → Completed lifecycle.
+Phase 7B adds a single-request operational dashboard with today's IST summary, active orders, inventory alerts, recent active orders, and quick action navigation.
 
 
 
@@ -36,7 +36,7 @@ Phase 6B completes the shopkeeper order workflow: automatic order polling, immut
 
 
 
-No active task. Select the next approved roadmap milestone before continuing.
+Phase 7B is complete. Select the next approved roadmap milestone before continuing.
 
 
 
@@ -328,13 +328,13 @@ Administrator seeding and browser login QA require `ADMIN_NAME`, `ADMIN_EMAIL`, 
 
 
 
-\* \[ ] Dashboard API
+\* \[x] Daily analytics aggregate and unique business-day record (Phase 7A)
 
-\* \[ ] Revenue
+\* \[x] Transactional completed-order cleanup and idempotent finalization (Phase 7A)
 
-\* \[ ] Profit
+\* \[x] Development manual finalization endpoint and scheduler-ready service (Phase 7A)
 
-\* \[ ] Best Sellers
+\* \[x] Operational dashboard API and admin UI (Phase 7B)
 
 \* \[ ] Low Stock
 
@@ -570,7 +570,7 @@ Administrator seeding and browser login QA require `ADMIN_NAME`, `ADMIN_EMAIL`, 
 
 \* \[ ] Inventory
 
-\* \[ ] Analytics
+\* \[x] Analytics (Phase 7A: snapshot-based daily metrics and retention cleanup)
 
 \* \[ ] Store schedule
 

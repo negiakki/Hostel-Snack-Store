@@ -602,11 +602,28 @@ Allowed values:
 
 
 
+\# Dashboard
+
+\## GET /dashboard
+
+\*\*Access:\*\* Admin
+
+Returns the data required for the initial operational dashboard in one response:
+
+\- Today's IST order count, completed-order revenue and profit, and store status
+\- Placed and ready order counts
+\- Current low-stock and out-of-stock products
+\- Five most recent active orders
+
+The dashboard is read-only and uses no dedicated dashboard persistence.
+
+\---
+
 \# Analytics
 
 
 
-\## GET /analytics
+\## GET /analytics/daily/:date
 
 
 
@@ -614,21 +631,42 @@ Allowed values:
 
 
 
-Returns dashboard metrics including:
+Returns the permanent aggregate for a finalized Asia/Kolkata (IST) business date (`YYYY-MM-DD`), including:
 
 
 
 \- Revenue
 
+\- Cost
+
 \- Profit
 
-\- Orders
+\- Best-selling product
 
-\- Products sold
+\- Total orders
 
-\- Best-selling products
+\- Average order value
 
-\- Low-stock products
+\- Total items sold
+
+Returns `404` when the business day has not been finalized.
+
+\## POST /analytics/daily/:date/finalize
+
+\*\*Access:\*\* Admin; development only
+
+Finalizes the explicit Asia/Kolkata (IST) business date (`YYYY-MM-DD`). The backend calculates
+daily metrics from immutable completed-order snapshots, persists the unique
+analytics record, then deletes that day's orders and order items in the same
+transaction. The response includes the analytics record, `deletedOrderCount`,
+and `alreadyFinalized`.
+
+The endpoint returns `409` if any order for the day is not `Completed`; no
+analytics or order data is changed in that case. A repeated successful request
+is idempotent and returns the existing record with `alreadyFinalized: true`.
+
+Production scheduling must call the cleanup service directly; Phase 7A does
+not include a cron job.
 
 
 
@@ -818,6 +856,8 @@ Updates:
 
 | PATCH /store/override | ❌ | ✅ |
 
+| GET /dashboard | ❌ | ✅ |
+
 | GET /analytics | ❌ | ✅ |
 
 | GET /settings | ❌ | ✅ |
@@ -871,6 +911,8 @@ Breaking changes should be introduced through a new API version rather than modi
 | Orders | GET, POST, PATCH |
 
 | Store | GET, PATCH |
+
+| Dashboard | GET |
 
 | Analytics | GET |
 

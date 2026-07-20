@@ -60,6 +60,8 @@ The application consists of the following entities:
 
 \- Order Items
 
+\- Daily Analytics
+
 \- Settings
 
 
@@ -209,6 +211,29 @@ Historical product information is stored here to preserve past transactions.
 
 
 
+\# Daily Analytics
+
+`DailyAnalytics` is the permanent, aggregate record for one finalized business day.
+It replaces the day's detailed orders after the retention workflow completes.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| business_date | Date | Unique finalized Asia/Kolkata (IST) business date |
+| total_orders | Integer | Number of completed orders |
+| revenue | Decimal | Sum of immutable order totals |
+| cost | Decimal | Sum of immutable order costs |
+| profit | Decimal | Sum of immutable order profits |
+| average_order_value | Decimal | Revenue divided by completed orders |
+| best_selling_product | String (Nullable) | Snapshot product name with the highest quantity sold |
+| total_items_sold | Integer | Sum of immutable order-item quantities |
+| created_at | Timestamp | Finalization timestamp |
+
+Exactly one record exists for each business date. Analytics are created and order
+detail is deleted in the same transaction; the aggregate is never deleted by
+the retention workflow.
+
+\---
+
 \# Settings
 
 
@@ -335,7 +360,9 @@ Relationship summary:
 
 
 
-Historical transaction data must never change.
+Current-day transaction snapshots must never change. They are retained only until
+the business day is finalized, at which point their derived `DailyAnalytics`
+aggregate becomes the permanent historical record.
 
 
 
@@ -359,11 +386,12 @@ This ensures:
 
 \- Product renames do not alter previous orders.
 
-\- Analytics remain historically accurate.
+\- Final daily analytics remain historically accurate after detailed orders are removed.
 
 
 
-Order Items become immutable after creation.
+Order Items become immutable after creation and are deleted only by the
+transactional daily-retention workflow.
 
 
 

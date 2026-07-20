@@ -94,6 +94,7 @@ Stores:
 - Products
 - Orders
 - Order Items
+- Daily Analytics
 - Settings
 
 Responsibilities:
@@ -202,28 +203,55 @@ If any step fails, the transaction is rolled back.
 ## Analytics
 
 ```
-Orders
+Completed order snapshots
 
 ↓
 
-Order Items
+Transactional aggregation
 
 ↓
 
-Backend Calculations
+DailyAnalytics record
 
 ↓
 
-Analytics Response
+Delete finalized orders and order items
 
 ↓
 
-Dashboard
+Future dashboard response
 ```
 
-Analytics are generated from historical transaction data.
+Analytics are generated from immutable transaction snapshots. Daily finalization
+creates the aggregate and removes detailed orders in one database transaction;
+no cleanup runs during application startup. See `DAILY_ANALYTICS.md` for the
+retention lifecycle and scheduler integration contract.
 
 No analytics values are manually maintained.
+
+## Operational dashboard
+
+```
+Dashboard request
+
+↓
+
+Dashboard service
+
+↓
+
+Current IST orders + active orders + inventory + store status
+
+↓
+
+Single operational response
+```
+
+The dashboard is a read-only aggregate of existing operational data. It uses
+today's IST order records for total-order and active-order counts, immutable
+completed-order snapshots for revenue and profit, current inventory for stock
+alerts, and the existing store-status service for availability. It adds no
+dashboard persistence and makes one initial API request.
 
 ---
 
