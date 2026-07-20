@@ -281,7 +281,7 @@ Accepted
 
 &#x20;       ▼
 
-Preparing
+Ready
 
 &#x20;       │
 
@@ -293,7 +293,7 @@ Ready
 
 &#x20;       ▼
 
-Delivered
+Completed
 
 ```
 
@@ -359,7 +359,7 @@ Admin Delivers Order
 
 &#x20;       ▼
 
-Order Marked Delivered
+Order Marked Completed
 
 ```
 
@@ -699,7 +699,7 @@ Verify Order ID
 
 &#x20;  ▼
 
-Mark Delivered
+Mark Completed
 
 ```
 
@@ -723,7 +723,7 @@ Deliver to Room
 
 &#x20;  ▼
 
-Mark Delivered
+Mark Completed
 
 ```
 

@@ -33,6 +33,8 @@ describe('OrdersRepository', () => {
     [Prisma.ProductUpdateManyArgs]
   >;
   let create: jest.Mock<Promise<CreatedOrderRecord>, [Prisma.OrderCreateArgs]>;
+  let findUnique: jest.Mock;
+  let orderUpdateMany: jest.Mock;
   let isOpen: jest.Mock;
 
   beforeEach(() => {
@@ -48,9 +50,11 @@ describe('OrdersRepository', () => {
         total_amount: new Prisma.Decimal('20.00'),
         created_at: new Date('2026-07-19T18:30:00.000Z'),
       });
+    findUnique = jest.fn();
+    orderUpdateMany = jest.fn().mockResolvedValue({ count: 1 });
     const transaction = {
       product: { findMany, updateMany },
-      order: { create },
+      order: { create, findUnique, updateMany: orderUpdateMany },
     };
     const prisma = {
       $transaction: jest.fn().mockImplementation((callback: unknown) => {
@@ -167,5 +171,41 @@ describe('OrdersRepository', () => {
     ).rejects.toBeInstanceOf(InsufficientOrderStockError);
 
     expect(create).not.toHaveBeenCalled();
+  });
+
+  it('allows only the next order-status transition and guards the update against races', async () => {
+    findUnique
+      .mockResolvedValueOnce({ status: 'Placed' })
+      .mockResolvedValueOnce({
+        id: 'f352bdf4-a211-43df-a0a5-8fe11fe0f6f8',
+        customer_name: 'Akshat',
+        status: 'Ready',
+        total_amount: new Prisma.Decimal('20.00'),
+        created_at: new Date('2026-07-19T18:30:00.000Z'),
+        order_items: [],
+      });
+
+    await repository.updateStatus(
+      'f352bdf4-a211-43df-a0a5-8fe11fe0f6f8',
+      'Ready',
+    );
+
+    expect(orderUpdateMany).toHaveBeenCalledWith({
+      where: {
+        id: 'f352bdf4-a211-43df-a0a5-8fe11fe0f6f8',
+        status: 'Placed',
+      },
+      data: { status: 'Ready' },
+    });
+  });
+
+  it('rejects a skip or a transition from a completed order', async () => {
+    findUnique.mockResolvedValue({ status: 'Completed' });
+
+    await expect(
+      repository.updateStatus('f352bdf4-a211-43df-a0a5-8fe11fe0f6f8', 'Ready'),
+    ).rejects.toMatchObject({ message: 'Order status transition is invalid.' });
+
+    expect(orderUpdateMany).not.toHaveBeenCalled();
   });
 });

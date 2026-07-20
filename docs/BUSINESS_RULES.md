@@ -50,15 +50,15 @@ Placed
 
 ↓
 
-Preparing
+Ready
 
 ↓
 
-Delivered
+Completed
 
 Orders cannot skip or move backward between statuses.
 
-Delivered orders are considered final.
+Completed orders are considered final.
 
 ---
 

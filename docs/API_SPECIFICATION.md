@@ -341,21 +341,8 @@ Archives a product.
 
 
 
-Returns all orders.
-
-
-
-\### Query Parameters
-
-
-
-| Parameter | Description |
-
-|-----------|-------------|
-
-| status | Filter by order status |
-
-| date | Filter by order date |
+Returns all orders sorted newest first. Each order includes its customer name,
+item count, snapshot total, status, and creation timestamp.
 
 
 
@@ -371,7 +358,8 @@ Returns all orders.
 
 
 
-Returns order details.
+Returns an immutable order snapshot, including the purchased item names,
+quantities, unit prices, and line totals.
 
 
 
@@ -489,7 +477,7 @@ Updates order status.
 
 {
 
-&#x20; "status": "Preparing"
+&#x20; "status": "Ready"
 
 }
 
@@ -503,9 +491,12 @@ Allowed values:
 
 \- Placed
 
-\- Preparing
+\- Ready
 
-\- Delivered
+\- Completed
+
+Only forward transitions are accepted: Placed → Ready → Completed. Completed
+orders are final and return `409` for any attempted status change.
 
 
 

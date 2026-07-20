@@ -155,7 +155,7 @@ Represents a customer order.
 
 | total\_profit | Decimal | Total profit |
 
-| status | Enum | Placed, Preparing, Delivered |
+| status | Enum | Placed, Ready, Completed |
 
 | created\_at | Timestamp | Order creation time |
 
@@ -511,9 +511,9 @@ Status must be one of:
 
 \- Placed
 
-\- Preparing
+\- Ready
 
-\- Delivered
+\- Completed
 
 
 

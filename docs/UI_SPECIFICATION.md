@@ -284,9 +284,9 @@ Actions:
 
 
 
-\- Mark Preparing
+\- Mark Ready
 
-\- Mark Delivered
+\- Mark Completed
 
 
 
@@ -726,9 +726,9 @@ Reusable badge representing:
 
 \- Placed
 
-\- Preparing
+\- Ready
 
-\- Delivered
+\- Completed
 
 \- Low Stock
 

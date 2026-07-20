@@ -10,6 +10,8 @@ import {
   InsufficientOrderStockError,
   OrderProductNotFoundError,
   OrdersRepository,
+  InvalidOrderStatusTransitionError,
+  OrderNotFoundError,
   StoreClosedOrderError,
 } from './orders.repository';
 import { OrdersService } from './orders.service';
@@ -22,13 +24,22 @@ const input = {
 describe('OrdersService', () => {
   let service: OrdersService;
   let create: jest.MockedFunction<OrdersRepository['create']>;
+  let list: jest.MockedFunction<OrdersRepository['list']>;
+  let getById: jest.MockedFunction<OrdersRepository['getById']>;
+  let updateStatus: jest.MockedFunction<OrdersRepository['updateStatus']>;
 
   beforeEach(async () => {
     create = jest.fn();
+    list = jest.fn();
+    getById = jest.fn();
+    updateStatus = jest.fn();
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         OrdersService,
-        { provide: OrdersRepository, useValue: { create } },
+        {
+          provide: OrdersRepository,
+          useValue: { create, list, getById, updateStatus },
+        },
       ],
     }).compile();
 
@@ -83,6 +94,94 @@ describe('OrdersService', () => {
       await expect(service.create(input)).rejects.toMatchObject(
         new Exception({ success: false, message }),
       );
+    },
+  );
+
+  it('returns newest-first order summaries with snapshot totals and item counts', async () => {
+    list.mockResolvedValue([
+      {
+        id: 'f352bdf4-a211-43df-a0a5-8fe11fe0f6f8',
+        customer_name: 'Akshat',
+        status: 'Ready',
+        total_amount: new Prisma.Decimal('40.00'),
+        created_at: new Date('2026-07-20T18:30:00.000Z'),
+        _count: { order_items: 2 },
+      },
+    ]);
+
+    await expect(service.list()).resolves.toEqual({
+      success: true,
+      data: [
+        {
+          orderId: 'f352bdf4-a211-43df-a0a5-8fe11fe0f6f8',
+          customerName: 'Akshat',
+          itemCount: 2,
+          status: 'Ready',
+          total: 40,
+          createdAt: '2026-07-20T18:30:00.000Z',
+        },
+      ],
+    });
+  });
+
+  it('returns immutable item snapshots for an order detail', async () => {
+    getById.mockResolvedValue({
+      id: 'f352bdf4-a211-43df-a0a5-8fe11fe0f6f8',
+      customer_name: 'Akshat',
+      status: 'Placed',
+      total_amount: new Prisma.Decimal('40.00'),
+      created_at: new Date('2026-07-20T18:30:00.000Z'),
+      order_items: [
+        {
+          product_name: 'Lays Classic',
+          quantity: 2,
+          selling_price: new Prisma.Decimal('20.00'),
+          subtotal: new Prisma.Decimal('40.00'),
+        },
+      ],
+    });
+
+    await expect(
+      service.getById('f352bdf4-a211-43df-a0a5-8fe11fe0f6f8'),
+    ).resolves.toEqual({
+      success: true,
+      data: {
+        orderId: 'f352bdf4-a211-43df-a0a5-8fe11fe0f6f8',
+        customerName: 'Akshat',
+        status: 'Placed',
+        total: 40,
+        createdAt: '2026-07-20T18:30:00.000Z',
+        items: [
+          {
+            productName: 'Lays Classic',
+            quantity: 2,
+            unitPrice: 20,
+            lineTotal: 40,
+          },
+        ],
+      },
+    });
+  });
+
+  it.each([
+    [
+      new OrderNotFoundError('f352bdf4-a211-43df-a0a5-8fe11fe0f6f8'),
+      NotFoundException,
+      'Order not found.',
+    ],
+    [
+      new InvalidOrderStatusTransitionError(),
+      ConflictException,
+      'Order status transition is invalid.',
+    ],
+  ])(
+    'maps order-management failures to standardized HTTP errors',
+    async (error, Exception, message) => {
+      updateStatus.mockRejectedValue(error);
+
+      await expect(
+        service.updateStatus('f352bdf4-a211-43df-a0a5-8fe11fe0f6f8', 'Ready'),
+      ).rejects.toMatchObject(new Exception({ success: false, message }));
     },
   );
 });

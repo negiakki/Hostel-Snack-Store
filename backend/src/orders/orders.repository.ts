@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { OrderStatus, Prisma } from '@prisma/client';
 import { PrismaService } from '../database/prisma.service';
 import { StoreStatusService } from '../store-status/store-status.service';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -20,8 +20,42 @@ const createdOrderSelect = {
   created_at: true,
 } satisfies Prisma.OrderSelect;
 
+const orderListSelect = {
+  id: true,
+  customer_name: true,
+  status: true,
+  total_amount: true,
+  created_at: true,
+  _count: { select: { order_items: true } },
+} satisfies Prisma.OrderSelect;
+
+const orderDetailSelect = {
+  id: true,
+  customer_name: true,
+  status: true,
+  total_amount: true,
+  created_at: true,
+  order_items: {
+    select: {
+      product_name: true,
+      quantity: true,
+      selling_price: true,
+      subtotal: true,
+    },
+    orderBy: { id: 'asc' },
+  },
+} satisfies Prisma.OrderSelect;
+
 export type CreatedOrderRecord = Prisma.OrderGetPayload<{
   select: typeof createdOrderSelect;
+}>;
+
+export type OrderListRecord = Prisma.OrderGetPayload<{
+  select: typeof orderListSelect;
+}>;
+
+export type OrderDetailRecord = Prisma.OrderGetPayload<{
+  select: typeof orderDetailSelect;
 }>;
 
 export class OrderProductNotFoundError extends Error {
@@ -47,6 +81,24 @@ export class StoreClosedOrderError extends Error {
     super('The store is currently closed.');
   }
 }
+
+export class OrderNotFoundError extends Error {
+  constructor(readonly orderId: string) {
+    super('Order not found.');
+  }
+}
+
+export class InvalidOrderStatusTransitionError extends Error {
+  constructor() {
+    super('Order status transition is invalid.');
+  }
+}
+
+const allowedNextStatuses: Readonly<Record<OrderStatus, OrderStatus | null>> = {
+  [OrderStatus.Placed]: OrderStatus.Ready,
+  [OrderStatus.Ready]: OrderStatus.Completed,
+  [OrderStatus.Completed]: null,
+};
 
 @Injectable()
 export class OrdersRepository {
@@ -147,6 +199,66 @@ export class OrdersRepository {
         },
         select: createdOrderSelect,
       });
+    });
+  }
+
+  list(): Promise<OrderListRecord[]> {
+    return this.prisma.order.findMany({
+      orderBy: { created_at: 'desc' },
+      select: orderListSelect,
+    });
+  }
+
+  async getById(orderId: string): Promise<OrderDetailRecord> {
+    const order = await this.prisma.order.findUnique({
+      where: { id: orderId },
+      select: orderDetailSelect,
+    });
+
+    if (!order) {
+      throw new OrderNotFoundError(orderId);
+    }
+
+    return order;
+  }
+
+  updateStatus(
+    orderId: string,
+    nextStatus: OrderStatus,
+  ): Promise<OrderDetailRecord> {
+    return this.prisma.$transaction(async (transaction) => {
+      const currentOrder = await transaction.order.findUnique({
+        where: { id: orderId },
+        select: { status: true },
+      });
+
+      if (!currentOrder) {
+        throw new OrderNotFoundError(orderId);
+      }
+
+      if (allowedNextStatuses[currentOrder.status] !== nextStatus) {
+        throw new InvalidOrderStatusTransitionError();
+      }
+
+      const update = await transaction.order.updateMany({
+        where: { id: orderId, status: currentOrder.status },
+        data: { status: nextStatus },
+      });
+
+      if (update.count !== 1) {
+        throw new InvalidOrderStatusTransitionError();
+      }
+
+      const updatedOrder = await transaction.order.findUnique({
+        where: { id: orderId },
+        select: orderDetailSelect,
+      });
+
+      if (!updatedOrder) {
+        throw new OrderNotFoundError(orderId);
+      }
+
+      return updatedOrder;
     });
   }
 }

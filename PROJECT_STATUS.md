@@ -34,7 +34,7 @@
 
 
 
-\*\*Current Phase:\*\* Phase 6A — Admin Authentication Complete
+\*\*Current Phase:\*\* Phase 6B — Orders Management Complete
 
 
 
@@ -92,7 +92,7 @@
 
 
 
-Admin Authentication
+Orders Management
 
 
 
@@ -100,7 +100,7 @@ Admin Authentication
 
 
 
-Phase 6A is complete: the admin area and protected APIs use a database-backed single administrator, bcrypt password verification, and JWT sessions held only in HttpOnly cookies.
+Phase 6B is complete: the shopkeeper can review newest-first orders, verify immutable snapshots, and move each order through Placed → Ready → Completed. The customer confirmation screen includes screenshot-based pickup guidance for verification at collection.
 
 
 
@@ -130,7 +130,7 @@ Phase 6A is complete: the admin area and protected APIs use a database-backed si
 | Inventory Management | ✅ Phase 4A backend, Phase 4B admin UI, and Phase 4C product-creation integration complete; history and order integration remain out of scope |
 | Store Status | ✅ Phase 3A backend, Phase 3B Admin UI, and the Phase 5A customer availability gate are complete |
 
-| Orders | 🟡 Customer order creation and confirmation complete; customer history and admin management remain out of scope |
+| Orders | ✅ Phase 6B complete: protected list, detail, and status APIs; polling admin workflow; immutable item snapshots; and screenshot-based pickup verification |
 
 | Analytics | ⬜ Not Started |
 

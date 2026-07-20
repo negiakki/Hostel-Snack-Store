@@ -36,7 +36,7 @@ The shopkeeper spends unnecessary time managing the store instead of fulfilling 
 
 Provide the simplest possible software that allows one student to efficiently operate a hostel snack store during a few hours each night.
 
-The application should automate repetitive work so the shopkeeper can focus on preparing and delivering orders.
+The application should automate repetitive work so the shopkeeper can focus on fulfilling orders.
 
 ---
 
@@ -124,11 +124,11 @@ Placed
 
 ↓
 
-Preparing
+Ready
 
 ↓
 
-Delivered
+Completed
 
 ---
 

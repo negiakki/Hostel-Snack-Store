@@ -9,8 +9,8 @@ datasource db {
 
 enum OrderStatus {
   Placed
-  Preparing
-  Delivered
+  Ready     @map("Preparing")
+  Completed @map("Delivered")
 }
 
 enum StoreOverride {

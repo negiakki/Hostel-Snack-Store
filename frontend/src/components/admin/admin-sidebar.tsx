@@ -35,6 +35,11 @@ const navigationItems = [
     icon: Boxes,
   },
   {
+    href: "/admin/orders",
+    label: "Orders",
+    icon: ClipboardList,
+  },
+  {
     href: "/admin/store-status",
     label: "Store Status",
     icon: Store,
@@ -42,7 +47,6 @@ const navigationItems = [
 ] as const;
 
 const comingSoonItems = [
-  { label: "Orders (Coming Soon)", icon: ClipboardList },
   { label: "Analytics (Coming Soon)", icon: BarChart3 },
 ] as const;
 
@@ -55,7 +59,7 @@ function NavigationLinks({ onNavigate }: NavigationLinksProps) {
 
   return (
     <nav aria-label="Admin navigation" className="grid gap-1">
-      {navigationItems.slice(0, 3).map(({ href, icon: Icon, label }) => {
+      {navigationItems.slice(0, 4).map(({ href, icon: Icon, label }) => {
         const isActive = pathname === href;
 
         return (
@@ -86,7 +90,7 @@ function NavigationLinks({ onNavigate }: NavigationLinksProps) {
           {label}
         </span>
       ))}
-      {navigationItems.slice(3).map(({ href, icon: Icon, label }) => {
+      {navigationItems.slice(4).map(({ href, icon: Icon, label }) => {
         const isActive = pathname === href;
 
         return (
@@ -157,7 +161,9 @@ export function AdminSidebar() {
         <div className="mt-8">
           <NavigationLinks />
         </div>
-        <div className="mt-auto border-t border-white/15 pt-4">{logoutButton}</div>
+        <div className="mt-auto border-t border-white/15 pt-4">
+          {logoutButton}
+        </div>
       </aside>
 
       <header className="flex min-h-16 items-center justify-between border-b border-white/15 bg-canvas-night px-4 text-white md:hidden">

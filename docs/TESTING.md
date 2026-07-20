@@ -252,7 +252,7 @@ Placed
 
 
 
-Preparing
+Ready
 
 
 
@@ -260,7 +260,7 @@ Preparing
 
 
 
-Delivered
+Completed
 
 
 

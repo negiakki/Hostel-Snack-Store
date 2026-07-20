@@ -20,7 +20,7 @@
 
 
 
-✅ Phase 6A — Admin Authentication Complete
+✅ Phase 6B — Orders Management Complete
 
 
 
@@ -28,7 +28,7 @@
 
 
 
-Phase 6A secures the admin area with a database-backed single administrator, bcrypt password verification, and JWT sessions stored only in HttpOnly cookies.
+Phase 6B completes the shopkeeper order workflow: automatic order polling, immutable order details, and the guarded Placed → Ready → Completed lifecycle.
 
 
 
@@ -294,11 +294,11 @@ Administrator seeding and browser login QA require `ADMIN_NAME`, `ADMIN_EMAIL`, 
 
 \* \[x] Create Order (Phase 5C)
 
-\* \[ ] List Orders
+\* \[x] List Orders (Phase 6B: newest-first admin list with polling)
 
-\* \[ ] Get Order
+\* \[x] Get Order (Phase 6B: immutable admin order detail)
 
-\* \[ ] Update Order Status
+\* \[x] Update Order Status (Phase 6B: Placed → Ready → Completed only)
 
 
 
@@ -446,13 +446,13 @@ Administrator seeding and browser login QA require `ADMIN_NAME`, `ADMIN_EMAIL`, 
 
 
 
-\* \[ ] Orders page
+\* \[x] Orders page (Phase 6B: responsive list and desktop table)
 
-\* \[ ] Order cards
+\* \[x] Order cards (Phase 6B: responsive mobile rows)
 
-\* \[ ] Status updates
+\* \[x] Status updates (Phase 6B: confirmed, immediate, and rollback-safe)
 
-\* \[ ] Order details
+\* \[x] Order details (Phase 6B: snapshot-based verification)
 
 
 
@@ -670,6 +670,13 @@ Only record:
 
 \* Blockers
 
+/*
+Technical Improvements
 
+- Improve Prisma seed output messages
+- Migrate to Prisma 7 config format (remove package.json prisma config)
+- Review cookie expiry configuration
+
+*/
 
 Do not use this document as a development diary or changelog. Git history already serves that purpose.

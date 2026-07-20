@@ -60,8 +60,9 @@ The design should feel deliberate and quiet—not playful, glossy, or dashboard-
 | --- | --- | --- |
 | Store open | `aloe-10` pill on light, white-outline pill on dark | Explicit “Open” text |
 | Store closed | Light surface with `ink` border, or dark outlined surface | Explicit “Closed” text |
-| Order placed / preparing | Neutral outlined pill | Status text remains visible |
-| Order delivered | `pistachio-10` pill on light | Explicit “Delivered” text |
+| Order placed | Amber-tinted outlined pill on dark order surfaces | Explicit “Placed” text |
+| Order ready | Sky-tinted outlined pill on dark order surfaces | Explicit “Ready” text |
+| Order completed | Violet-tinted outlined pill on dark order surfaces | Explicit “Completed” text |
 | Low stock | `ink` outline / high-emphasis text, never red-only | Include count and “Low stock” text |
 | Destructive action | Black outlined pill with clear destructive wording and confirmation | Never a color-only affordance |
 
