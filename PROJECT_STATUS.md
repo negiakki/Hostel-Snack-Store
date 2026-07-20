@@ -18,13 +18,13 @@
 
 
 
-\*\*Progress:\*\* 60%
+\*\*Progress:\*\* 65%
 
 
 
 ```
 
-████████████░░░░░░░░ 60%
+█████████████░░░░░░░ 65%
 
 ```
 
@@ -34,7 +34,7 @@
 
 
 
-\*\*Current Phase:\*\* Phase 5D — Checkout & Order Confirmation Complete
+\*\*Current Phase:\*\* Phase 6A — Admin Authentication Complete
 
 
 
@@ -60,7 +60,7 @@
 
 | Phase 0 – Foundation | ✅ Complete |
 
-| Phase 1 – Authentication | ⬜ Not Started |
+| Phase 1 – Authentication | ✅ Phase 6A complete: database-backed single-admin JWT cookie authentication |
 
 | Phase 2 – Products | 🟡 In Progress |
 
@@ -92,7 +92,7 @@
 
 
 
-Checkout & Order Confirmation
+Admin Authentication
 
 
 
@@ -100,7 +100,7 @@ Checkout & Order Confirmation
 
 
 
-Phase 5D is complete: customers can submit name-only orders from a gated checkout, see server validation errors without losing the cart, and view a refresh-safe order confirmation after successful submission.
+Phase 6A is complete: the admin area and protected APIs use a database-backed single administrator, bcrypt password verification, and JWT sessions held only in HttpOnly cookies.
 
 
 
@@ -124,7 +124,7 @@ Phase 5D is complete: customers can submit name-only orders from a gated checkou
 
 | Database | 🟡 Schema and migration ready; application blocked |
 
-| Authentication | ⬜ Not Started |
+| Authentication | ✅ Phase 6A complete; initial administrator is seeded from `ADMIN_*` variables and runtime login reads PostgreSQL |
 
 | Product Management | 🟡 Read, Write, and Admin UI QA complete; subsequent stock changes use the inventory API |
 | Inventory Management | ✅ Phase 4A backend, Phase 4B admin UI, and Phase 4C product-creation integration complete; history and order integration remain out of scope |
@@ -226,7 +226,7 @@ main
 
 
 
-Local PostgreSQL is not running on port 5432, so the initial Prisma migration has not been applied.
+Administrator seeding and browser login QA require `ADMIN_NAME`, `ADMIN_EMAIL`, and `ADMIN_PASSWORD` to be configured in the backend environment. The Prisma migration is applied to Supabase PostgreSQL.
 
 
 
@@ -238,7 +238,7 @@ Local PostgreSQL is not running on port 5432, so the initial Prisma migration ha
 
 
 
-Manual review of the Phase 5D checkout and order-confirmation flow before selecting the next approved milestone.
+Manual review of the Phase 6A admin authentication flow before selecting the next approved milestone.
 
 
 
@@ -255,3 +255,5 @@ Manual review of the Phase 5D checkout and order-confirmation flow before select
 \- Detailed implementation progress is tracked in `TASKS.md`.
 
 \- Architecture decisions are documented in the `docs/` directory.
+
+\- Authentication architecture: `AdminUser` is the sole credential record; the idempotent seed reads `ADMIN_NAME`, `ADMIN_EMAIL`, and `ADMIN_PASSWORD` only when no administrator exists. Login verifies bcrypt hashes, signs an eight-hour JWT with `JWT_SECRET`, and sends it as an HttpOnly cookie. Every protected API verifies the cookie and rechecks the administrator record; the frontend verifies `/auth/session` on each admin-shell load and never stores the token.

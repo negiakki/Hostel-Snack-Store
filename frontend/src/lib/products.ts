@@ -1,4 +1,5 @@
 import { apiConfig } from "@/config/api";
+import { adminFetch } from "@/lib/admin-api";
 
 export interface Product {
   id: string;
@@ -58,14 +59,21 @@ function isApiError(value: unknown): value is ApiErrorResponse {
   );
 }
 
-async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
-  const response = await fetch(apiConfig.baseUrl + path, {
+async function request<T>(
+  path: string,
+  options: RequestInit = {},
+  authenticated = false,
+): Promise<T> {
+  const requestOptions = {
     headers: {
       "Content-Type": "application/json",
       ...options.headers,
     },
     ...options,
-  });
+  };
+  const response = authenticated
+    ? await adminFetch(apiConfig.baseUrl + path, requestOptions)
+    : await fetch(apiConfig.baseUrl + path, requestOptions);
   const payload: unknown = await response.json();
 
   if (!response.ok) {
@@ -99,13 +107,35 @@ export async function getProducts(
   return response.data;
 }
 
+export async function getAdminProducts(
+  filters: ProductFilters,
+  signal?: AbortSignal,
+): Promise<Product[]> {
+  const query = new URLSearchParams();
+
+  if (filters.search) {
+    query.set("search", filters.search);
+  }
+
+  if (filters.category) {
+    query.set("category", filters.category);
+  }
+
+  query.set("archived", String(filters.archived ?? false));
+  const queryString = query.toString();
+  const path = "/admin/products" + (queryString ? "?" + queryString : "");
+  const response = await request<ProductsResponse>(path, { signal }, true);
+
+  return response.data;
+}
+
 export async function createProduct(
   input: CreateProductInput,
 ): Promise<Product> {
   const response = await request<ProductResponse>("/products", {
     method: "POST",
     body: JSON.stringify(input),
-  });
+  }, true);
 
   return response.data;
 }
@@ -117,7 +147,7 @@ export async function updateProduct(
   const response = await request<ProductResponse>("/products/" + id, {
     method: "PATCH",
     body: JSON.stringify(input),
-  });
+  }, true);
 
   return response.data;
 }
@@ -125,7 +155,7 @@ export async function updateProduct(
 export async function archiveProduct(id: string): Promise<Product> {
   const response = await request<ProductResponse>("/products/" + id, {
     method: "DELETE",
-  });
+  }, true);
 
   return response.data;
 }
@@ -136,6 +166,7 @@ export async function restoreProduct(id: string): Promise<Product> {
     {
       method: "PATCH",
     },
+    true,
   );
 
   return response.data;

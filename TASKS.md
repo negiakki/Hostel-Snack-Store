@@ -20,7 +20,7 @@
 
 
 
-✅ Phase 5D — Checkout & Order Confirmation Complete
+✅ Phase 6A — Admin Authentication Complete
 
 
 
@@ -28,7 +28,7 @@
 
 
 
-Phase 5D completes the customer purchase journey. Customers can submit a cart from `/checkout` with a name only, receive backend validation errors without losing their cart, and view the server-provided order confirmation at `/order-confirmation`.
+Phase 6A secures the admin area with a database-backed single administrator, bcrypt password verification, and JWT sessions stored only in HttpOnly cookies.
 
 
 
@@ -44,7 +44,7 @@ No active task. Select the next approved roadmap milestone before continuing.
 
 
 
-None for Phase 5D.
+Administrator seeding and browser login QA require `ADMIN_NAME`, `ADMIN_EMAIL`, and `ADMIN_PASSWORD` to be configured in the backend environment.
 
 
 
@@ -184,13 +184,11 @@ None for Phase 5D.
 
 
 
-\* \[ ] Configure Better Auth
+\* [x] Admin authentication (Phase 6A: database-backed admin, bcrypt seed, JWT HttpOnly cookie session)
 
-\* \[ ] Email authentication
+\* [x] Protected admin routes and APIs (Phase 6A)
 
-\* \[ ] Google authentication
-
-\* \[ ] Protected routes
+\* [ ] Customer authentication (out of scope)
 
 
 
@@ -368,7 +366,7 @@ None for Phase 5D.
 
 
 
-\* \[ ] Sidebar
+\* [x] Sidebar (Phase 6A: authenticated administrator profile, prepared Orders and Analytics navigation, logout)
 
 \* \[ ] Header
 
@@ -538,7 +536,7 @@ None for Phase 5D.
 
 \* \[ ] Database testing
 
-\* \[ ] Authentication testing
+\* [x] Authentication testing (Phase 6A: credential validation, protected APIs, cookie creation and removal)
 
 
 

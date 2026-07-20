@@ -111,3 +111,14 @@ model StoreSettings {
 
   @@map("store_settings")
 }
+
+model AdminUser {
+  id            String   @id @default(uuid()) @db.Uuid
+  name          String
+  email         String   @unique
+  password_hash String
+  created_at    DateTime @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime @updatedAt @db.Timestamptz(6)
+
+  @@map("admin_users")
+}

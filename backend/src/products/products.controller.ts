@@ -23,19 +23,22 @@ import {
 } from './dto/product-response.dto';
 import { UuidValidationPipe } from './pipes/uuid-validation.pipe';
 import { ProductsService } from './products.service';
+import { Public } from '../auth/public.decorator';
 
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Get()
+  @Public()
   findAll(
     @Query(new ProductQueryPipe()) query: ProductQueryDto,
   ): Promise<ProductsResponseDto> {
-    return this.productsService.findAll(query);
+    return this.productsService.findAll({ ...query, archived: false });
   }
 
   @Get(':id')
+  @Public()
   findOne(
     @Param('id', new UuidValidationPipe()) id: string,
   ): Promise<ProductResponseWrapperDto> {

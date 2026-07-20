@@ -76,6 +76,34 @@ Endpoints are classified as:
 
 
 
+Admin authentication uses a short-lived JWT in a Secure, HttpOnly cookie. Browser clients must send `credentials: "include"` for admin requests. The cookie is never returned in a JSON response.
+
+\## POST /auth/login
+
+\*\*Access:\*\* Public
+
+Validates the seeded administrator's email and bcrypt password, then sets the session cookie.
+
+\## POST /auth/logout
+
+\*\*Access:\*\* Public
+
+Clears the session cookie.
+
+\## GET /auth/session
+
+\*\*Access:\*\* Admin
+
+Returns the authenticated administrator's id, name, and email for the admin shell.
+
+\## GET /admin/products
+
+\*\*Access:\*\* Admin
+
+Returns the admin product list, including archived products when `archived=true`. Public `GET /products` remains limited to the customer catalog.
+
+\---
+
 \# Standard Response Format
 
 

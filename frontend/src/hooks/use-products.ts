@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import {
   archiveProduct,
   createProduct,
-  getProducts,
+  getAdminProducts,
   type CreateProductInput,
   type Product,
   type ProductFilters,
@@ -43,7 +43,7 @@ export function useProducts(filters: ProductFilters) {
     setError(null);
 
     try {
-      setProducts(await getProducts(filters));
+      setProducts(await getAdminProducts(filters));
     } catch (requestError: unknown) {
       setError(
         requestError instanceof Error
@@ -63,7 +63,7 @@ export function useProducts(filters: ProductFilters) {
       setError(null);
 
       try {
-        const result = await getProducts(filters, abortController.signal);
+        const result = await getAdminProducts(filters, abortController.signal);
         setProducts(result);
       } catch (requestError: unknown) {
         if (

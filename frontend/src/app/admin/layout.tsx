@@ -1,14 +1,9 @@
-import { AdminSidebar } from "@/components/admin/admin-sidebar";
+import { AdminArea } from "@/components/admin/admin-area";
 
 export default function AdminLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <div className="flex min-h-[100dvh] flex-col bg-background md:flex-row">
-      <AdminSidebar />
-      <div className="min-w-0 flex-1">{children}</div>
-    </div>
-  );
+  return <AdminArea>{children}</AdminArea>;
 }

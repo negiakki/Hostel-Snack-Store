@@ -1,4 +1,5 @@
 import { apiConfig } from "@/config/api";
+import { adminFetch } from "@/lib/admin-api";
 
 export interface InventoryProduct {
   id: string;
@@ -96,7 +97,7 @@ async function request(
   path: string,
   options: RequestInit = {},
 ): Promise<unknown> {
-  const response = await fetch(apiConfig.baseUrl + path, {
+  const response = await adminFetch(apiConfig.baseUrl + path, {
     headers: {
       "Content-Type": "application/json",
       ...options.headers,

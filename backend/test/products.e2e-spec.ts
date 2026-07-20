@@ -4,7 +4,9 @@ import request from 'supertest';
 import { App } from 'supertest/types';
 import { AppModule } from '../src/app.module';
 import { API_PREFIX } from '../src/common/constants/api.constants';
+import { AuthService } from '../src/auth/auth.service';
 import { ProductsService } from '../src/products/products.service';
+import { JwtService } from '@nestjs/jwt';
 
 const product = {
   id: '69d2b1d0-5ef6-4cf3-9d31-03e3af2d6c80',
@@ -23,6 +25,7 @@ describe('Products endpoints (e2e)', () => {
   let update: jest.Mock;
   let archive: jest.Mock;
   let restore: jest.Mock;
+  let sessionCookie: string;
 
   beforeEach(async () => {
     findAll = jest.fn().mockResolvedValue({ success: true, data: [product] });
@@ -37,7 +40,22 @@ describe('Products endpoints (e2e)', () => {
     })
       .overrideProvider(ProductsService)
       .useValue({ findAll, findOne, create, update, archive, restore })
+      .overrideProvider(AuthService)
+      .useValue({
+        validateSession: jest.fn().mockResolvedValue({
+          id: '8c474ed5-272f-45fe-959e-faf7cc4d2ae8',
+          name: 'Store Admin',
+          email: 'admin@example.com',
+        }),
+      })
       .compile();
+
+    const jwtService = moduleFixture.get(JwtService);
+    const token = await jwtService.signAsync({
+      sub: '8c474ed5-272f-45fe-959e-faf7cc4d2ae8',
+      email: 'admin@example.com',
+    });
+    sessionCookie = `hostel_snack_admin_session=${token}`;
 
     app = moduleFixture.createNestApplication();
     app.setGlobalPrefix(API_PREFIX);
@@ -55,6 +73,15 @@ describe('Products endpoints (e2e)', () => {
       category: 'Chips',
       archived: false,
     });
+  });
+
+  it('keeps archived products out of the public catalog', async () => {
+    await request(app.getHttpServer())
+      .get('/api/v1/products?archived=true')
+      .expect(200)
+      .expect({ success: true, data: [product] });
+
+    expect(findAll).toHaveBeenCalledWith({ archived: false });
   });
 
   it('returns one valid product and rejects an invalid UUID', async () => {
@@ -81,6 +108,7 @@ describe('Products endpoints (e2e)', () => {
 
     await request(app.getHttpServer())
       .post('/api/v1/products')
+      .set('Cookie', sessionCookie)
       .send(input)
       .expect(201)
       .expect({ success: true, data: product });
@@ -88,6 +116,7 @@ describe('Products endpoints (e2e)', () => {
 
     await request(app.getHttpServer())
       .post('/api/v1/products')
+      .set('Cookie', sessionCookie)
       .send({ ...input, stock: -1 })
       .expect(400)
       .expect({ success: false, message: 'Invalid request.' });
@@ -96,6 +125,7 @@ describe('Products endpoints (e2e)', () => {
   it('updates a product with a valid partial payload', async () => {
     await request(app.getHttpServer())
       .patch('/api/v1/products/69d2b1d0-5ef6-4cf3-9d31-03e3af2d6c80')
+      .set('Cookie', sessionCookie)
       .send({ sellingPrice: 30 })
       .expect(200)
       .expect({ success: true, data: product });
@@ -109,6 +139,7 @@ describe('Products endpoints (e2e)', () => {
   it('archives and restores an existing product', async () => {
     await request(app.getHttpServer())
       .delete('/api/v1/products/69d2b1d0-5ef6-4cf3-9d31-03e3af2d6c80')
+      .set('Cookie', sessionCookie)
       .expect(200)
       .expect({ success: true, data: product });
     expect(archive).toHaveBeenCalledWith(
@@ -117,6 +148,7 @@ describe('Products endpoints (e2e)', () => {
 
     await request(app.getHttpServer())
       .patch('/api/v1/products/69d2b1d0-5ef6-4cf3-9d31-03e3af2d6c80/restore')
+      .set('Cookie', sessionCookie)
       .expect(200)
       .expect({ success: true, data: product });
     expect(restore).toHaveBeenCalledWith(

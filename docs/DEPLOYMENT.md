@@ -59,6 +59,9 @@ The application requires the following environment variables.
 | DATABASE\_URL | PostgreSQL connection string |
 
 | JWT\_SECRET | Authentication secret |
+| ADMIN\_NAME | Initial administrator display name; used only by the seed |
+| ADMIN\_EMAIL | Initial administrator login email; used only by the seed |
+| ADMIN\_PASSWORD | Initial administrator password; used only by the seed |
 
 | STORAGE\_BUCKET | Product image storage bucket |
 
@@ -311,6 +314,11 @@ Requirements:
 \- HTTPS enabled
 
 \- Database connectivity
+\- `JWT_SECRET` set to a cryptographically secure value of at least 32 characters
+\- `FRONTEND_URL` set to the Vercel origin (comma-separate origins only when preview deployments need access)
+\- Run `npx prisma migrate deploy` and `npx prisma db seed` once after setting the `ADMIN_*` variables
+
+The frontend and backend are separate origins in production. The backend enables credentialed CORS for `FRONTEND_URL`, and production sessions use `Secure; HttpOnly; SameSite=None` cookies. Local HTTP development uses the same configuration with a non-Secure, `SameSite=Lax` cookie.
 
 
 

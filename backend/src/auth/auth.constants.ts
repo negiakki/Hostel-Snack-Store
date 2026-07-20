@@ -1,0 +1,4 @@
+export const AUTH_COOKIE_NAME = 'hostel_snack_admin_session';
+export const AUTH_SESSION_DURATION_SECONDS = 60 * 60 * 8;
+export const AUTH_SESSION_DURATION_MILLISECONDS =
+  AUTH_SESSION_DURATION_SECONDS * 1000;

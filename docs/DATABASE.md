@@ -68,6 +68,23 @@ The application consists of the following entities:
 
 
 
+\# Admin Users
+
+`AdminUser` stores the single shopkeeper's authentication record.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| id | UUID | Primary key |
+| name | String | Display name shown in the admin shell |
+| email | String | Unique login email |
+| password_hash | String | bcrypt hash; plaintext passwords are never stored |
+| created_at | Timestamp | Creation time |
+| updated_at | Timestamp | Last modification time |
+
+The initial administrator is created only by the idempotent Prisma seed. Runtime authentication always reads this record from PostgreSQL.
+
+\---
+
 \# Products
 
 

@@ -10,11 +10,12 @@ async function bootstrap() {
   const configService = app.get(ConfigService<Configuration, true>);
   const appConfig = configService.getOrThrow<Configuration['app']>('app');
   const logger = new Logger('Bootstrap');
-  const { frontendUrl, port } = appConfig;
+  const { frontendUrls, port } = appConfig;
 
   app.setGlobalPrefix(API_PREFIX);
   app.enableCors({
-    origin: frontendUrl,
+    origin: frontendUrls,
+    credentials: true,
   });
 
   await app.listen(port);

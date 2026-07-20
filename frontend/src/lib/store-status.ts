@@ -1,4 +1,5 @@
 import { apiConfig } from "@/config/api";
+import { adminFetch } from "@/lib/admin-api";
 
 export interface StoreStatus {
   isOpen: boolean;
@@ -34,14 +35,18 @@ function getErrorMessage(payload: unknown): string {
 async function request(
   path: string,
   options: RequestInit = {},
+  authenticated = false,
 ): Promise<StoreStatus> {
-  const response = await fetch(apiConfig.baseUrl + path, {
+  const requestOptions = {
     headers: {
       "Content-Type": "application/json",
       ...options.headers,
     },
     ...options,
-  });
+  };
+  const response = authenticated
+    ? await adminFetch(apiConfig.baseUrl + path, requestOptions)
+    : await fetch(apiConfig.baseUrl + path, requestOptions);
   const payload: unknown = await response.json().catch(() => null);
 
   if (!response.ok) {
@@ -65,5 +70,5 @@ export function updateStoreStatus(
   return request("/store-status", {
     method: "PUT",
     body: JSON.stringify(input),
-  });
+  }, true);
 }
