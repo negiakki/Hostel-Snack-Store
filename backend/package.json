@@ -15,6 +15,9 @@
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "prisma:generate": "prisma generate",
+    "prisma:migrate:deploy": "prisma migrate deploy",
+    "prisma:migrate:status": "prisma migrate status",
+    "prisma:seed": "prisma db seed",
     "postinstall": "prisma generate",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -24,6 +27,9 @@
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
+  },
+  "engines": {
+    "node": ">=20.9.0"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",

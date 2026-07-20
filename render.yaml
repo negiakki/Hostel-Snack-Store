@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: hostel-snack-store-api
+    runtime: node
+    rootDir: backend
+    buildCommand: npm ci && npm run build
+    preDeployCommand: npm run prisma:migrate:deploy
+    initialDeployHook: npm run prisma:seed
+    startCommand: npm run start:prod
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ADMIN_NAME
+        sync: false
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false

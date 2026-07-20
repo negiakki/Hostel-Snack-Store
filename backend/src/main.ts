@@ -11,7 +11,13 @@ async function bootstrap() {
   const configService = app.get(ConfigService<Configuration, true>);
   const appConfig = configService.getOrThrow<Configuration['app']>('app');
   const logger = new Logger('Bootstrap');
-  const { frontendUrls, port } = appConfig;
+  const { environment, frontendUrls, port } = appConfig;
+
+  app.useLogger(
+    environment === 'production'
+      ? ['log', 'warn', 'error']
+      : ['log', 'error', 'warn', 'debug', 'verbose'],
+  );
 
   app.setGlobalPrefix(API_PREFIX);
   app.useGlobalFilters(new ApiExceptionFilter());
@@ -22,7 +28,9 @@ async function bootstrap() {
   });
 
   await app.listen(port);
-  logger.log(`API listening on http://localhost:${port}/${API_PREFIX}`);
+  logger.log(
+    `API listening on port ${port} with ${frontendUrls.length} allowed frontend origin(s).`,
+  );
 }
 
 void bootstrap();

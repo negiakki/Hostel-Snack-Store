@@ -20,7 +20,7 @@
 
 
 
-✅ Phase 8 — Hardening & Release Review Complete
+✅ Phase 9 — Production Deployment Preparation Complete
 
 
 
@@ -28,7 +28,7 @@
 
 
 
-Phase 8 completed the V1 release hardening pass: error handling, response-contract consistency, duplicate-request prevention, authentication-flow resilience, responsive failure-state QA, and full automated regression validation.
+Production deployment configuration and documentation are complete: Render Blueprint, migration and first-deploy administrator seed commands, Vercel production API configuration, CORS and secure-cookie validation, storage guidance, scheduler runbook, smoke tests, and rollback instructions.
 
 
 
@@ -36,7 +36,7 @@ Phase 8 completed the V1 release hardening pass: error handling, response-contra
 
 
 
-Complete the deployment checklist in `docs/DEPLOYMENT.md`, provision production services and secrets, then run production smoke tests.
+Provision the production services and secrets using `docs/DEPLOYMENT.md`, then run the manual production smoke-test checklist.
 
 
 
@@ -73,6 +73,7 @@ No active application blocker. Production administrator credentials and infrastr
 | Phase 6 — Testing         | ✅ Complete |
 
 | Phase 7 — Deployment      | 🟡 Pending production rollout |
+| Phase 9 — Deployment Preparation | ✅ Complete |
 
 | Phase 8 — Polish          | ✅ Complete |
 
@@ -656,7 +657,7 @@ A task is considered complete only when:
 
 V1 feature implementation is complete. Phase 8 validation passed: frontend lint and production build; backend lint, production build, 106 unit tests, and 20 E2E tests.
 
-Remaining work is deployment-only: provision the production PostgreSQL database and storage, configure secrets and allowed frontend origins, deploy migrations and the administrator seed, enable backups and monitoring, then complete production smoke testing.
+Production deployment preparation is complete. Remaining work is manual: provision the production PostgreSQL database and storage, configure secrets and allowed frontend origins, deploy migrations and the administrator seed, enable backups and monitoring, configure the scheduler, then complete production smoke testing.
 
 Known V2 limitations: no customer authentication, payments, delivery, session analytics, charts, notifications, or additional dashboard enhancements.
 

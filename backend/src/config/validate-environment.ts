@@ -41,16 +41,22 @@ export function validateEnvironment(config: Record<string, unknown>) {
     throw new Error('FRONTEND_URL must contain at least one frontend origin.');
   }
 
+  const isProduction = config.NODE_ENV === 'production';
+
   for (const origin of frontendUrl.split(',').map((url) => url.trim())) {
     try {
       const url = new URL(origin);
 
-      if (!['http:', 'https:'].includes(url.protocol)) {
+      if (
+        !['http:', 'https:'].includes(url.protocol) ||
+        url.origin !== origin ||
+        (isProduction && url.protocol !== 'https:')
+      ) {
         throw new Error();
       }
     } catch {
       throw new Error(
-        'FRONTEND_URL must be a comma-separated list of valid HTTP(S) origins.',
+        'FRONTEND_URL must be a comma-separated list of valid origins without paths. Production origins must use HTTPS.',
       );
     }
   }
